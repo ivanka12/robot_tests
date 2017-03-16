@@ -826,10 +826,7 @@ Library  openprocurement_client_helper.py
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${award}=  create_data_dict  data.status  active
   Set To Dictionary  ${award.data}  id=${tender.data.awards[${award_num}].id}
-  Run Keyword IF  'open' in '${MODE}'
-  ...      Set To Dictionary  ${award.data}
-  ...      qualified=${True}
-  ...      eligible=${True}
+  Set To Dictionary  ${award.data}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award  ${tender}  ${award}
   Log  ${reply}
 
@@ -981,7 +978,7 @@ Library  openprocurement_client_helper.py
   [Arguments]  ${username}  ${tender_uaid}  ${qualification_num}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${qualification}=  create_data_dict   data.status  active
-  Set To Dictionary  ${qualification.data}  id=${tender.data.qualifications[${qualification_num}].id}  eligible=${True}  qualified=${True}
+  Set To Dictionary  ${qualification.data}  id=${tender.data.qualifications[${qualification_num}].id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_qualification  ${tender}  ${qualification}
   Log  ${reply}
 
