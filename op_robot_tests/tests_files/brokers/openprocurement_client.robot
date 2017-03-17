@@ -1082,6 +1082,16 @@ Library  openprocurement_client_helper.py
   Log  ${reply}
 
 
+Редагувати поле description
+  [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${field}  ${fieldvalue}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${contract}=  Create Dictionary  data=${tender.data.contracts[${contract_index}]}
+  Remove From Dictionary  ${USERS.users['${viewer}'].tender_data.data.contracts[${contract_index}]}  description
+  Set_To_Object  ${contract.data}  ${field}  ${fieldvalue}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract  ${tender}  ${contract}
+  Log  ${reply}
+
+
 Вказати дату початку дії угоди
   [Arguments]  ${username}  ${tender_uaid}  ${contract_index}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
