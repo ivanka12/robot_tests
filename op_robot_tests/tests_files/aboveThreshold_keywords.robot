@@ -8,8 +8,8 @@ Resource           base_keywords.robot
 
 *** Keywords ***
 
-Неможливість редагувати однопредметний тендер менше ніж за 7 днів до завершення періоду подання пропозицій
-  ${no_edit_time}=  add_minutes_to_date  ${USERS.users['${tender_owner}'].tender_data.data.tenderPeriod.endDate}  -6
+Неможливість редагувати однопредметний тендер менше ніж за 3 днів до завершення періоду подання пропозицій
+  ${no_edit_time}=  add_minutes_to_date  ${USERS.users['${tender_owner}'].tender_data.data.tenderPeriod.endDate}  -2
   Дочекатись дати  ${no_edit_time}
   Require Failure  ${tender_owner}  Внести зміни в тендер  ${TENDER['TENDER_UAID']}  description  description
 
