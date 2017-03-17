@@ -62,6 +62,25 @@ Suite Teardown  Test Suite Teardown
   Звірити відображення поля contracts[-1].value.amount тендера із ${USERS.users['${tender_owner}'].new_amount} для користувача ${viewer}
 
 
+Можливість встановити номер контракту угоди
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Редагування угоди
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      contract_sign
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run As  ${tender_owner}  Встановити номер контракту угоди  ${TENDER['TENDER_UAID']}  -1
+
+
+Відображення номера контракту угоди
+  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
+  ...  viewer
+  ...  ${USERS.users['${viewer}'].broker}
+  ...  contract_sign
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Звірити відображення поля contracts[-1].contractNumber тендера із ${USERS.users['${tender_owner}'].contractNumber} для користувача ${viewer}
+
+
 Можливість редагувати поле description
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Редагування угоди
   ...   tender_owner
