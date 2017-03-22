@@ -148,7 +148,7 @@ Library  openprocurement_client_helper.py
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Set_To_Object  ${tender.data}   ${fieldname}   ${fieldvalue}
   ${procurementMethodType}=  Get From Object  ${tender.data}  procurementMethodType
-  Run Keyword If  '${procurementMethodType}' == 'aboveThresholdUA' or '${procurementMethodType}' == 'aboveThresholdEU'
+  Run Keyword If  '${procurementMethodType}' == 'aboveThresholdUA' or '${procurementMethodType}' == 'aboveThresholdTS' or '${procurementMethodType}' == 'aboveThresholdEU'
   ...      Remove From Dictionary  ${tender.data}  enquiryPeriod
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender  ${tender}
