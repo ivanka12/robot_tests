@@ -42,6 +42,7 @@ from .initial_data import (
     test_tender_data_limited,
     test_tender_data_openeu,
     test_tender_data_openua,
+    test_tender_data_twostage,
 )
 from barbecue import chef
 from restkit import request
@@ -298,6 +299,9 @@ def prepare_test_tender_data(procedure_intervals,
         return munchify({'data': test_tender_data_limited(tender_parameters)})
     elif mode == 'openeu':
         return munchify({'data': test_tender_data_openeu(
+            tender_parameters, submissionMethodDetails)})
+    elif mode == 'twostage':
+        return munchify({'data': test_tender_data_twostage(
             tender_parameters, submissionMethodDetails)})
     elif mode == 'openua':
         return munchify({'data': test_tender_data_openua(

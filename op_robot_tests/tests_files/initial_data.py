@@ -401,6 +401,21 @@ def test_tender_data_openeu(params, submissionMethodDetails):
     data['procuringEntity']['kind'] = 'general'
     return data
 
+def test_tender_data_twostage(params, submissionMethodDetails):
+    # We should not provide any values for `enquiryPeriod` when creating
+    # an openUA or openEU procedure. That field should not be present at all.
+    # Therefore, we pass a nondefault list of periods to `test_tender_data()`.
+    data = test_tender_data(params, ('tender',), submissionMethodDetails)
+    data['procurementMethodType'] = 'aboveThresholdTS'
+    data['title_en'] = "[TESTING]"
+    for item_number, item in enumerate(data['items']):
+        item['description_en'] = "Test item #{}".format(item_number)
+    data['procuringEntity']['name_en'] = fake_en.name()
+    data['procuringEntity']['contactPoint']['name_en'] = fake_en.name()
+    data['procuringEntity']['contactPoint']['availableLanguage'] = "en"
+    data['procuringEntity']['identifier']['legalName_en'] = "Institution \"Vinnytsia City Council primary and secondary general school № 10\""
+    return data
+
 
 def test_tender_data_competitive_dialogue(params, submissionMethodDetails):
     # We should not provide any values for `enquiryPeriod` when creating
