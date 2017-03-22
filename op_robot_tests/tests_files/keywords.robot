@@ -649,7 +649,7 @@ Require Failure
   Дочекатись дати  ${date}
   Оновити LAST_MODIFICATION_DATE
   Дочекатись синхронізації з майданчиком  ${username}
-  ${next_status}=  Set variable if  'open' in '${MODE}'  active.tendering  active.enquiries
+  ${next_status}=  Set variable if  'open' in '${MODE}' or 'twostage' in '${MODE}'  active.tendering  active.enquiries
   Wait until keyword succeeds
   ...      5 min 15 sec
   ...      15 sec

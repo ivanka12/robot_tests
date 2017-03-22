@@ -90,7 +90,7 @@ Library  openprocurement_client_helper.py
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  create_tender  ${tender_data}
   Log  ${tender}
   ${access_token}=  Get Variable Value  ${tender.access.token}
-  ${status}=  Set Variable If  'open' in '${MODE}'  active.tendering  ${EMPTY}
+  ${status}=  Set Variable If  'open' in '${MODE}' or 'twostage' in '${MODE}'  active.tendering  ${EMPTY}
   ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
   ${status}=  Set Variable If  '${status}'=='${EMPTY}'  active   ${status}
   Set To Dictionary  ${tender['data']}  status=${status}
@@ -722,7 +722,7 @@ Library  openprocurement_client_helper.py
   \    Set To Dictionary  ${bid.data.parameters[${index}]}  code=${code}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  create_bid  ${tender}  ${bid}
   Log  ${reply}
-  ${status}=  Set Variable If  '${MODE}'=='openeu'  pending  active
+  ${status}=  Set Variable If  '${MODE}'=='openeu' or '${MODE}'=='twostage'  pending  active
   Set To Dictionary  ${reply['data']}  status=${status}
   ${reply_active}=  Call Method  ${USERS.users['${username}'].client}  patch_bid  ${tender}  ${reply}
   Set To Dictionary  ${USERS.users['${username}']}  access_token=${reply['access']['token']}

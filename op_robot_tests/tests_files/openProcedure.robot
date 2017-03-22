@@ -111,10 +111,11 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${viewer}'].broker}
   ...      tender_view
   ...      non-critical
-  Run Keyword IF  'open' in '${MODE}'
+  Run Keyword IF  'open' in '${MODE}' or 'twostage' in '${MODE}'
   ...      Отримати дані із поля enquiryPeriod.startDate тендера для усіх користувачів
   ...      ELSE
   ...      Звірити відображення дати enquiryPeriod.startDate тендера для усіх користувачів
+
 
 
 Відображення закінчення періоду уточнення тендера
@@ -123,7 +124,7 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${viewer}'].broker}
   ...      tender_view  level2
   ...      critical
-  Run Keyword IF  'open' in '${MODE}'
+  Run Keyword IF  'open' in '${MODE}' or 'twostage' in '${MODE}'
   ...      Отримати дані із поля enquiryPeriod.endDate тендера для усіх користувачів
   ...      ELSE
   ...      Звірити відображення дати enquiryPeriod.endDate тендера для усіх користувачів
