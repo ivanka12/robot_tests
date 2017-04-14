@@ -214,11 +214,11 @@ ${ITEM_MEAT}        ${True}
   Звірити відображення поля classification.id усіх предметів для користувача ${viewer}
 
 
-Відображення активів лоту з різних CAV груп
+Відображення активів лоту з різних CPV груп
    [Tags]   ${USERS.users['${viewer}'].broker}: Відображення активів лоту
    ...      viewer
    ...      ${USERS.users['${viewer}'].broker}
-   ...      tender_view_cav_groups  level1
+   ...      tender_view_cpv_groups  level1
   Звірити належність усіх предметів до різних груп для користувача ${viewer}
 
 
