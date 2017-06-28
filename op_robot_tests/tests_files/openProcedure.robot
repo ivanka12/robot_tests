@@ -452,6 +452,7 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      add_tender_doc  level3
   ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість додати документацію до тендера
 
@@ -462,6 +463,7 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      add_lot_doc  level3
   ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість додати документацію до всіх лотів
 
@@ -482,6 +484,7 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${viewer}'].broker}
   ...      add_lot_doc  level2
   ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити відображення заголовку документації до всіх лотів для користувача ${viewer}
 
 
@@ -491,6 +494,7 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${viewer}'].broker}
   ...      add_tender_doc  level2
   ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити відображення вмісту документа ${USERS.users['${tender_owner}'].tender_document.doc_id} із ${USERS.users['${tender_owner}'].tender_document.doc_content} для користувача ${viewer}
 
 
@@ -500,6 +504,7 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${viewer}'].broker}
   ...      add_lot_doc  level2
   ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити відображення вмісту документації до всіх лотів для користувача ${viewer}
 
 
@@ -969,6 +974,7 @@ ${ITEM_MEAT}        ${True}
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
   ...  create_tender_claim
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити відображення поля title вимоги із ${USERS.users['${provider}'].tender_claim_data.claim.data.title} для користувача ${viewer}
 
 
@@ -977,6 +983,7 @@ ${ITEM_MEAT}        ${True}
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
   ...  create_tender_claim
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити відображення поля title документа ${USERS.users['${provider}'].tender_claim_data.doc_id} до скарги ${USERS.users['${provider}'].tender_claim_data.complaintID} з ${USERS.users['${provider}'].tender_claim_data.doc_name} для користувача ${viewer}
 
 
@@ -985,6 +992,7 @@ ${ITEM_MEAT}        ${True}
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
   ...  create_tender_claim
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити відображення вмісту документа ${USERS['${provider}'].tender_claim_data.doc_id} до скарги ${USERS.users['${provider}'].tender_claim_data.complaintID} з ${USERS['${provider}'].tender_claim_data.doc_content} для користувача ${viewer}
 
 
@@ -1156,6 +1164,7 @@ ${ITEM_MEAT}        ${True}
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
   ...  create_lot_claim
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити відображення поля title вимоги про виправлення умов 0 лоту із ${USERS.users['${provider}'].lot_claim_data.claim.data.title} для користувача ${viewer}
 
 
@@ -1164,6 +1173,7 @@ ${ITEM_MEAT}        ${True}
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
   ...  create_lot_claim
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити відображення поля title документа ${USERS.users['${provider}'].lot_claim_data.doc_id} до скарги ${USERS.users['${provider}'].lot_claim_data.complaintID} з ${USERS.users['${provider}'].lot_claim_data.doc_name} для користувача ${viewer}
 
 
@@ -1172,6 +1182,7 @@ ${ITEM_MEAT}        ${True}
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
   ...  create_lot_claim
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити відображення вмісту документа ${USERS['${provider}'].lot_claim_data.doc_id} до скарги ${USERS.users['${provider}'].lot_claim_data.complaintID} з ${USERS['${provider}'].lot_claim_data.doc_content} для користувача ${viewer}
 
 
@@ -1180,6 +1191,7 @@ ${ITEM_MEAT}        ${True}
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
   ...  create_lot_claim
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити відображення поля status вимоги про виправлення умов 0 лоту із claim для користувача ${viewer}
 
 
@@ -1189,6 +1201,7 @@ ${ITEM_MEAT}        ${True}
   ...  ${USERS.users['${tender_owner}'].broker}
   ...  answer_lot_claim
   [Teardown]  Оновити LAST_MODIFICATION_DATE
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   Можливість відповісти на вимогу про виправлення умов лоту
 
 
@@ -1206,6 +1219,7 @@ ${ITEM_MEAT}        ${True}
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
   ...  answer_lot_claim
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити відображення поля resolutionType вимоги про виправлення умов 0 лоту із ${USERS.users['${tender_owner}'].lot_claim_data.claim_answer.data.resolutionType} для користувача ${viewer}
 
 
@@ -1223,6 +1237,7 @@ ${ITEM_MEAT}        ${True}
   ...  ${USERS.users['${provider}'].broker}
   ...  resolve_lot_claim
   [Teardown]  Оновити LAST_MODIFICATION_DATE
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   Можливість підтвердити задоволення вимоги про виправлення умов лоту
 
 
@@ -1240,6 +1255,7 @@ ${ITEM_MEAT}        ${True}
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
   ...  resolve_lot_claim
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити відображення поля satisfied вимоги про виправлення умов 0 лоту із ${USERS.users['${provider}'].lot_claim_data.claim_answer_confirm.data.satisfied} для користувача ${viewer}
 
 
@@ -1248,6 +1264,7 @@ ${ITEM_MEAT}        ${True}
   ...  provider
   ...  ${USERS.users['${provider}'].broker}
   ...  escalate_lot_claim
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість перетворити вимогу про виправлення умов лоту в скаргу
 
@@ -1266,6 +1283,7 @@ ${ITEM_MEAT}        ${True}
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
   ...  escalate_lot_claim
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити відображення поля satisfied вимоги про виправлення умов 0 лоту із ${USERS.users['${provider}'].lot_claim_data.escalation.data.satisfied} для користувача ${viewer}
 
 
@@ -1275,6 +1293,7 @@ ${ITEM_MEAT}        ${True}
   ...  ${USERS.users['${provider}'].broker}
   ...  cancel_lot_claim
   [Teardown]  Оновити LAST_MODIFICATION_DATE
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   Можливість скасувати вимогу про виправлення умов лоту
 
 
@@ -1366,6 +1385,7 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${provider}'].broker}
   ...      add_doc_to_bid_by_provider
   ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість завантажити документ в пропозицію користувачем ${provider}
 
@@ -1376,6 +1396,7 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${provider}'].broker}
   ...      add_doc_to_bid_by_provider
   ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість змінити документацію цінової пропозиції користувачем ${provider}
 
@@ -1420,6 +1441,7 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${provider}'].broker}
   ...      openeu_make_bid_doc_private_by_provider
   ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість змінити документацію цінової пропозиції з публічної на приватну учасником ${provider}
 
@@ -1430,6 +1452,7 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${provider}'].broker}
   ...      openeu_add_financial_bid_doc_by_provider
   ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість завантажити financial_documents документ до пропозиції учасником ${provider}
 
@@ -1440,6 +1463,7 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${provider}'].broker}
   ...      openeu_add_qualification_bid_doc_by_provider
   ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість завантажити qualification_documents документ до пропозиції учасником ${provider}
 
@@ -1450,6 +1474,7 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${provider}'].broker}
   ...      openeu_add_eligibility_bid_doc_by_provider
   ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість завантажити eligibility_documents документ до пропозиції учасником ${provider}
 
@@ -1677,6 +1702,7 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_add_doc_to_tender
   ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Run Keyword And Expect Error  *  Можливість додати документацію до тендера
 
@@ -1687,6 +1713,7 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_add_doc_to_lot
   ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Run Keyword And Expect Error  *  Можливість додати документацію до 0 лоту
 
@@ -1717,6 +1744,7 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_add_doc_to_first_bid
   ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість завантажити документ у кваліфікацію 0 пропозиції
 
@@ -1747,6 +1775,7 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_add_doc_to_second_bid
   ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість завантажити документ у кваліфікацію 1 пропозиції
 
@@ -2079,4 +2108,5 @@ ${ITEM_MEAT}        ${True}
   ...      viewer  tender_owner
   ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
   ...      document_service
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   Можливість перевірити завантаження документів через Document Service

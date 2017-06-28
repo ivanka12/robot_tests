@@ -159,6 +159,7 @@ Suite Teardown  Test Suite Teardown
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
   ...      add_doc_to_contract
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   Звірити відображення вмісту документа ${USERS.users['${tender_owner}']['contract_doc']['id']} із ${USERS.users['${tender_owner}']['contract_doc']['content']} для користувача ${viewer}
 
 
@@ -167,6 +168,7 @@ Suite Teardown  Test Suite Teardown
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
   ...      add_doc_to_contract
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   Звірити відображення поля documentOf документа ${USERS.users['${tender_owner}']['contract_doc']['id']} із tender для користувача ${viewer}
 
 

@@ -246,6 +246,7 @@ Resource           resource.robot
 Можливість додати документацію до ${lot_index} лоту
   ${lot_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].tender_data.data.lots[${lot_index}]}
   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+  Sleep  30
   Run As  ${tender_owner}  Завантажити документ в лот  ${file_path}  ${TENDER['TENDER_UAID']}  ${lot_id}
   ${doc_id}=  get_id_from_string  ${file_name}
   ${data}=  Create Dictionary
@@ -253,6 +254,7 @@ Resource           resource.robot
   ...      doc_id=${doc_id}
   ...      doc_content=${file_content}
   ${empty_list}=  Create List
+  Sleep  30
   ${lots_documents}=  Get variable value  ${USERS.users['${tender_owner}'].lots_documents}  ${empty_list}
   Append to list  ${lots_documents}  ${data}
   Set to dictionary  ${USERS.users['${tender_owner}']}  lots_documents=${lots_documents}
@@ -525,6 +527,7 @@ Resource           resource.robot
   ...      name=${file_name}
   ...      content=${file_content}
   Set to dictionary  ${USERS.users['${tender_owner}']}  contract_doc=${doc}
+  Sleep  60
   Run As  ${tender_owner}  Завантажити документацію до договору  ${CONTRACT_UAID}  ${file_path}
   Remove File  ${file_path}
 
@@ -686,11 +689,13 @@ Resource           resource.robot
 Можливість створити вимогу про виправлення умов закупівлі із документацією користувачем ${username}
   ${claim}=  Підготувати дані для подання вимоги
   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+  Sleep  30
   ${complaintID}=  Run As  ${username}
   ...      Створити вимогу про виправлення умов закупівлі
   ...      ${TENDER['TENDER_UAID']}
   ...      ${claim}
   ...      ${file_path}
+  Sleep  30
   ${doc_id}=  get_id_from_string  ${file_name}
   ${claim_data}=  Create Dictionary
   ...      claim=${claim}
@@ -698,6 +703,7 @@ Resource           resource.robot
   ...      doc_name=${file_name}
   ...      doc_id=${doc_id}
   ...      doc_content=${file_content}
+  Sleep  30
   ${claim_data}=  munch_dict  arg=${claim_data}
   Set To Dictionary  ${USERS.users['${username}']}  tender_claim_data  ${claim_data}
   Remove File  ${file_path}
