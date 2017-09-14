@@ -12,7 +12,10 @@ Library  openprocurement_client.utils
   ${status}=  Run Keyword And Return Status  Dictionary Should Contain Key  ${USERS.users['${username}'].id_map}  ${tender_uaid}
   Run Keyword And Return If  ${status}  Get From Dictionary  ${USERS.users['${username}'].id_map}  ${tender_uaid}
   Call Method  ${USERS.users['${username}'].client}  get_tenders
-  ${tender_id}=  Wait Until Keyword Succeeds  5x  30 sec  get_tender_id_by_uaid  ${tender_uaid}  ${USERS.users['${username}'].client}  id_field=auctionID
+  ${tender_id}=  Run Keyword IF  'assets' in '${MODE}'
+  ...    Wait Until Keyword Succeeds  5x  30 sec  get_tender_id_by_uaid  ${tender_uaid}  ${USERS.users['${username}'].client}  id_field=assetID
+  ...    ELSE IF  '${MODE}' == 'lots'  Wait Until Keyword Succeeds  5x  30 sec  get_tender_id_by_uaid  ${tender_uaid}  ${USERS.users['${username}'].client}  id_field=lotID
+  ...    ELSE  Wait Until Keyword Succeeds  5x  30 sec  get_tender_id_by_uaid  ${tender_uaid}  ${USERS.users['${username}'].client}  id_field=auctionID
   Set To Dictionary  ${USERS.users['${username}'].id_map}  ${tender_uaid}  ${tender_id}
   [return]  ${tender_id}
 
@@ -32,8 +35,11 @@ Library  openprocurement_client.utils
 #  Uncomment this line if there is need to precess files operations without DS.
 # ${ds_api_wraper}=  set variable  ${None}
   ${ds_api_wraper}=  prepare_ds_api_wrapper  ${ds_host_url}  ${auth_ds}
-
-  ${api_wrapper}=  prepare_api_wrapper  ${USERS.users['${username}'].api_key}  ${resource}  ${api_host_url}  ${api_version}  ${ds_api_wraper}
+  ${asset_api_wrapper}=  prepare_asset_api_wrapper  ${USERS.users['${username}'].api_key_registry}  assets  ${api_host_url}  ${api_version}  ${ds_api_wraper}
+  ${lot_api_wrapper}=  prepare_asset_api_wrapper  ${USERS.users['${username}'].api_key_registry}  lots  ${api_host_url}  ${api_version}  ${ds_api_wraper}
+  ${api_wrapper}=  prepare_api_wrapper  ${api_key}  ${resource}  ${api_host_url}  ${api_version}  ${ds_api_wraper}
+  Set To Dictionary  ${USERS.users['${username}']}  asset_client=${asset_api_wrapper}
+  Set To Dictionary  ${USERS.users['${username}']}  lot_client=${asset_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  client=${api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  access_token=${EMPTY}
   ${id_map}=  Create Dictionary
@@ -179,7 +185,11 @@ Library  openprocurement_client.utils
   Set To Dictionary  ${USERS.users['${username}']}   access_token=${access_token}
   Set To Dictionary  ${USERS.users['${username}']}   tender_data=${tender}
   Log   ${USERS.users['${username}'].tender_data}
-  [return]  ${tender.data.auctionID}
+  Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/${resource}/${tender.data.id}${\n}  WARN
+  ${ID}=  Run Keyword if  '${MODE}' == 'assets'  Set Variable  ${tender.data.assetID}
+  ...  ELSE IF  '${MODE}' == 'lots'  Set Variable  ${tender.data.lotID}
+  ...  ELSE  Set Variable  ${tender.data.auctionID}
+  [return]  ${ID}
 
 
 Пошук тендера по ідентифікатору
@@ -190,6 +200,33 @@ Library  openprocurement_client.utils
   Set To Dictionary  ${USERS.users['${username}']}  tender_data=${tender}
   ${tender}=  munch_dict  arg=${tender}
   Log  ${tender}
+  [return]   ${tender}
+
+
+Пошук актива по ідентифікатору
+  [Arguments]  ${username}  ${tender_uaid}
+  ${internalid}=  openprocurement_client.Отримати internal id по UAid  ${username}  ${tender_uaid}
+  ${tender}=  Call Method  ${USERS.users['${username}'].client}  get_tender  ${internalid}
+  ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
+  Set To Dictionary  ${USERS.users['${username}']}  tender_data=${tender}
+  ${tender}=  munch_dict  arg=${tender}
+  Log  ${tender}
+  [return]   ${tender}
+
+
+Звірити статус актива
+  [Arguments]  ${username}  ${assetid}  ${status}
+  ${tender}=   Call Method  ${USERS.users['${username}'].asset_client}  get_asset  ${assetid}
+  Log  ${tender}
+  Порівняти об'єкти  ${status}  ${tender.data.status}
+  [return]   ${tender}
+
+
+Звірити статус лоту
+  [Arguments]  ${username}  ${assetid}  ${status}
+  ${tender}=   Call Method  ${USERS.users['${username}'].lot_client}  get_lot  ${assetid}
+  Log  ${tender}
+  Порівняти об'єкти  ${status}  ${tender.data.status}
   [return]   ${tender}
 
 
@@ -260,6 +297,22 @@ Library  openprocurement_client.utils
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${item_index}=  get_object_index_by_id  ${tender.data['items']}  ${item_id}
   Remove From List  ${tender.data['items']}  ${item_index}
+  Call Method  ${USERS.users['${username}'].client}  patch_tender  ${tender}
+
+
+Видалити актив
+  [Arguments]  ${username}  ${tender_uaid}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  Set_To_Object  ${tender.data}  status  deleted
+  Log  ${tender}
+  Call Method  ${USERS.users['${username}'].client}  patch_tender  ${tender}
+
+
+Розформувати лот
+  [Arguments]  ${username}  ${tender_uaid}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  Set_To_Object  ${tender.data}  status  dissolved
+  Log  ${tender}
   Call Method  ${USERS.users['${username}'].client}  patch_tender  ${tender}
 
 

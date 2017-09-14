@@ -1,7 +1,8 @@
 *** Variables ***
-${resource}      auctions   # possible values: tenders, auctions
-${api_host_url}  https://lb.api-sandbox.ea2.openprocurement.net
-${api_version}   2.3
+${resource}      assets   # possible values: tenders, auctions
+${api_host_url}  https://lb.api-sandbox.registry.ea.openprocurement.net
+${api_version}   0.1
 ${broker}        Quinta
-${ds_host_url}   https://upload.docs-sandbox.ea2.openprocurement.net
+${ds_host_url}   http://upload.docs.registry-sandbox.ea.openrpocurement.net
 ${role}          viewer
+# ${api_key}		 b31ef66eabcc44e3b5a5347b57539f49

@@ -164,18 +164,23 @@ Get Broker Property By Username
 Створити артефакт
   ${artifact}=  Create Dictionary
   ...      api_version=${api_version}
-  ...      tender_uaid=${TENDER['TENDER_UAID']}
   ...      last_modification_date=${TENDER['LAST_MODIFICATION_DATE']}
   ...      mode=${MODE}
-  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}
-  ...          tender_owner=${USERS.users['${tender_owner}'].broker}
-  ...          access_token=${USERS.users['${tender_owner}'].access_token}
-  ...          tender_id=${USERS.users['${tender_owner}'].tender_data.data.id}
-  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  tender_owner_access_token=${USERS.users['${tender_owner}'].access_token}
-  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider_access_token=${USERS.users['${provider}'].access_token}
-  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider1_access_token=${USERS.users['${provider1}'].access_token}
-  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider_bid_id=${USERS.users['${provider}'].bid_id}
-  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider1_bid_id=${USERS.users['${provider1}'].bid_id}
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${ARTIFACT}=  load_data_from  ${file_path}
+  ${assets_id}=  Create List
+  :FOR  ${asset_id}  IN  @{ARTIFACT.assets_id}
+  \  Run Keyword If  '${MODE}'=='assets'  Run Keyword And Ignore Error  Append To List  ${assets_id}  ${asset_id}
+  Log  ${assets_id}
+  Run Keyword If  '${MODE}'=='assets'  Append To List  ${assets_id}
+  ...          ${USERS.users['${tender_owner}'].tender_data.data.id}
+  Log  ${assets_id}
+  Run Keyword If  '${MODE}'=='assets'  Set To Dictionary  ${artifact}  assets_id=${assets_id}
+  Run Keyword If  '${MODE}'=='lots'  Set To Dictionary  ${artifact}
+  ...          assets_id=
+  ...          lot_uaid=${USERS.users['${tender_owner}'].tender_data.data.lotID}
+  ...          lot_id=${USERS.users['${tender_owner}'].tender_data.data.id}
+  ...          tender_owner_access_token=${USERS.users['${tender_owner}'].access_token}
   Log   ${artifact}
   log_object_data  ${artifact}  file_name=artifact  update=${True}  artifact=${True}
 
@@ -183,16 +188,11 @@ Get Broker Property By Username
 Завантажити дані про тендер
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
-  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  access_token=${ARTIFACT.access_token}
-  ${TENDER}=  Create Dictionary  TENDER_UAID=${ARTIFACT.tender_uaid}  LAST_MODIFICATION_DATE=${ARTIFACT.last_modification_date}  LOT_ID=${Empty}
   ${MODE}=  Get Variable Value  ${MODE}  ${ARTIFACT.mode}
-  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  access_token=${ARTIFACT.tender_owner_access_token}
-  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider}']}  access_token=${ARTIFACT.provider_access_token}
-  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider1}']}  access_token=${ARTIFACT.provider1_access_token}
-  Set Suite Variable  ${MODE}
-  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider}']}  bid_id=${ARTIFACT.provider_bid_id}
-  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider1}']}  bid_id=${ARTIFACT.provider1_bid_id}
-  Set Suite Variable  ${TENDER}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${viewer}']}  assets_id=${ARTIFACT.assets_id}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  assets_id=${ARTIFACT.assets_id}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  lot_id=${ARTIFACT.lot_id}
+  Log  ${USERS.users['${viewer}'].assets_id}
   log_object_data  ${ARTIFACT}  file_name=artifact  update=${True}  artifact=${True}
 
 
@@ -703,6 +703,43 @@ Require Failure
   ...      ${username}
   ...      ${tender_uaid}
   ...      complete
+
+
+Звірити статус неуспішного тендера
+  [Arguments]  ${username}  ${status}
+  Оновити LAST_MODIFICATION_DATE
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      20 min 15 sec
+  ...      15 sec
+  ...      Звірити статус тендера
+  ...      ${username}
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${status}
+
+
+Звірити статус лоту для
+  [Arguments]  ${username}  ${status}
+  Оновити LAST_MODIFICATION_DATE
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      20 min 15 sec
+  ...      15 sec
+  ...      Звірити статус лоту
+  ...      ${username}
+  ...      ${USERS.users['${username}'].lot_id}
+  ...      ${status}
+
+
+Звірити статус активів
+  [Arguments]  ${username}  ${status}
+  ${len_of_assets}=  Get Length  ${USERS.users['${username}'].assets_id}
+  Log  ${len_of_assets}
+  :FOR  ${index}  IN  ${len_of_assets}
+  \  Wait until keyword succeeds
+  \  ...      5 min 15 sec
+  \  ...      15 sec
+  \  ...      Звірити статус актива  ${username}  ${USERS.users['${username}'].assets_id[${index-1}]}  ${status}
 
 
 Звірити cтатус тендера у випадку наявності лише однієї пропозиції

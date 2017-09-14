@@ -6,16 +6,20 @@ Resource           resource.robot
 
 
 *** Keywords ***
-Можливість оголосити тендер
-  ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
+Можливість зареєструвати ${assets} актив
+  :FOR  ${asset_index}  IN  ${tender_owner}  ${viewer}
+  \  Можливість зареєструвати актив
+
+
+Можливість зареєструвати актив
   ${tender_parameters}=  Create Dictionary
   ...      mode=${MODE}
-  ...      number_of_items=${NUMBER_OF_ITEMS}
-  ...      tender_meat=${${TENDER_MEAT}}
-  ...      item_meat=${${ITEM_MEAT}}
   ...      api_host_url=${API_HOST_URL}
+  ...      api_key=${API_KEY}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
+  Run keyword if  '${MODE}' == 'lots'  Set to dictionary  ${tender_parameters}  assets_id=${USERS.users['${tender_owner}'].assets_id}
+  Run keyword if  '${MODE}' == 'dgfOtherAssets'  Set to dictionary  ${tender_parameters}  lot_id=${USERS.users['${tender_owner}'].lot_id}
   ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
   ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data}
@@ -31,6 +35,16 @@ Resource           resource.robot
 Можливість знайти тендер по ідентифікатору для користувача ${username}
   Дочекатись синхронізації з майданчиком  ${username}
   Run as  ${username}  Пошук тендера по ідентифікатору  ${TENDER['TENDER_UAID']}
+
+
+Можливість знайти актив по ідентифікатору для усіх користувачів
+  :FOR  ${username}  IN  ${tender_owner}  ${viewer}
+  \  Можливість знайти тендер по ідентифікатору для користувача ${username}
+
+
+Можливість знайти актив по ідентифікатору для користувача ${username}
+  Дочекатись синхронізації з майданчиком  ${username}
+  Run as  ${username}  Пошук актива по ідентифікатору  ${TENDER['TENDER_UAID']}
 
 
 Можливість змінити поле ${field_name} тендера на ${field_value}
@@ -77,6 +91,20 @@ Resource           resource.robot
 
 Можливість видалити предмет закупівлі з тендера
   Run As  ${tender_owner}  Видалити предмет закупівлі  ${TENDER['TENDER_UAID']}  ${USERS.users['${tender_owner}'].item_data.item_id}
+
+
+Можливість видалити актив
+  Run As  ${tender_owner}  Видалити актив  ${TENDER['TENDER_UAID']}
+
+
+Можливість розформувати лот
+  Run As  ${tender_owner}  Розформувати лот  ${TENDER['TENDER_UAID']}
+
+
+Можливість змінити статус активу на ${status}
+  Set_To_Object  ${USERS.users['${tender_owner}'].tender_data.data}  status  ${status}
+  Log  ${USERS.users['${tender_owner}'].tender_data}
+  Call Method  ${USERS.users['${tender_owner}'].client}  patch_tender  ${USERS.users['${tender_owner}'].tender_data}
 
 
 Звірити відображення поля ${field} документа ${doc_id} із ${left} для користувача ${username}

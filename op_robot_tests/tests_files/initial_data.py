@@ -33,7 +33,7 @@ def create_fake_tenderAttempts():
 
 
 def create_fake_amount():
-    return round(random.uniform(3000, 999999999.99), 2)
+    return round(random.randint(3000, 999999999))
 
 
 def create_fake_value(value_amount):
@@ -146,9 +146,9 @@ def test_tender_data(params, periods=("enquiry", "tender")):
     data["procuringEntity"]["kind"] = "other"
 
     scheme_group = fake.scheme_other()[:3]
-    for i in range(params['number_of_items']):
-        new_item = test_item_data(scheme_group)
-        data['items'].append(new_item)
+    # for i in range(params['number_of_items']):
+    #     new_item = test_item_data(scheme_group)
+    #     data['items'].append(new_item)
 
     if data.get("mode") == "test":
         data["title"] = u"[ТЕСТУВАННЯ] {}".format(data["title"])
@@ -165,6 +165,32 @@ def test_tender_data(params, periods=("enquiry", "tender")):
     data.update(period_dict)
 
     return munchify(data)
+
+
+def test_asset_data():
+    cpv_group = fake.scheme_other()
+    classification= test_item_data(cpv_group)
+    value= test_bid_value(1000000,10)
+    test_asset_data = {
+    "title": fake.title(),
+    "assetType": "basic",
+    }
+    test_asset_data.update(classification)
+    test_asset_data.update(value)
+    return munchify(test_asset_data)
+
+
+def test_lot_data(assets_id):
+    cpv_group = fake.scheme_other()
+    classification= test_item_data(cpv_group)
+    test_lot_data = {
+        "title": fake.title(), 
+        "lotType": "basic"
+    }
+    test_lot_data['lotCustodian']= classification['assetCustodian']
+    test_lot_data['description']= classification['description']
+    test_lot_data['assets']= assets_id
+    return munchify(test_lot_data)
 
 
 def test_question_data():
@@ -246,21 +272,22 @@ def test_item_data(scheme):
     data["description"] = field_with_id("i", data["description"])
     data["description_en"] = field_with_id("i", data["description_en"])
     data["description_ru"] = field_with_id("i", data["description_ru"])
-    days = fake.random_int(min=1, max=30)
-    data["deliveryAddress"]["countryName_en"] = translate_country_en(data["deliveryAddress"]["countryName"])
-    data["deliveryAddress"]["countryName_ru"] = translate_country_ru(data["deliveryAddress"]["countryName"])
     return munchify(data)
 
 
 def test_tender_data_dgf_other(params):
     data = test_tender_data(params, [])
-
+    data["dgfDecisionDate"] =  u"2016-11-17"
+    data["dgfDecisionID"] = u"219560"
+    data["merchandisingObject"] = params['lot_id']
+    data["status"] = "pending.verification"
     data['dgfID'] = fake.dgfID()
     data['tenderAttempts'] =  fake.random_int(min=1, max=4)
     del data["procuringEntity"]
+    del data["items"]
 
-    for i in range(params['number_of_items']):
-        data['items'].pop()
+    # for i in range(params['number_of_items']):
+    #     data['items'].pop()
 
     url = params['api_host_url']
     if url == 'https://lb.api.ea.openprocurement.org':
@@ -276,8 +303,8 @@ def test_tender_data_dgf_other(params):
     data['procurementMethodType'] = 'dgfOtherAssets'
     data["procuringEntity"] = fake.procuringEntity_other()
 
-    for i in range(params['number_of_items']):
-        scheme_group_other = fake.scheme_other()[:4]
-        new_item = test_item_data(scheme_group_other)
-        data['items'].append(new_item)
+    # for i in range(params['number_of_items']):
+    #     scheme_group_other = fake.scheme_other()[:4]
+    #     new_item = test_item_data(scheme_group_other)
+    #     data['items'].append(new_item)
     return data

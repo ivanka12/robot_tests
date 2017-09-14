@@ -136,15 +136,16 @@ class OP_Provider(BaseProvider):
                 break
 
         address = self.random_element(self.addresses)
+        assetCustodian = self.random_element(self.procuringEntities)
         item = {
             "description": item_base_data["description"],
             "description_ru": item_base_data["description_ru"],
             "description_en": item_base_data["description_en"],
             "classification": classification["classification"],
             "additionalClassifications": classification["additionalClassifications"],
-            "deliveryAddress": address["deliveryAddress"],
-            "deliveryLocation": address["deliveryLocation"],
             "unit": item_base_data["unit"],
+            "assetCustodian": assetCustodian,
+            "address": address["deliveryAddress"],
             "quantity": self.randomize_nb_elements(number=item_base_data["quantity"], le=80, ge=120)
         }
         return deepcopy(item)

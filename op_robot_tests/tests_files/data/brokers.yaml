@@ -36,7 +36,7 @@ Default:
             accelerator: 1440
             auction:  [25, 30]
     # Synchronization delay, in seconds
-    timeout_on_wait: 300
+    timeout_on_wait: 2
 Quinta:
     intervals:
         default:

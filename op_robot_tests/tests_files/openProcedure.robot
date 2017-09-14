@@ -5,9 +5,15 @@ Suite Teardown  Test Suite Teardown
 
 
 *** Variables ***
+
+${MODE}             openeu
 @{USED_ROLES}       tender_owner  provider  provider1  provider2  viewer
 
-${NUMBER_OF_ITEMS}  ${1}
+${RESOURCE}         auctions
+${API_HOST_URL}     https://lb.api-sandbox.ea.openprocurement.org
+${DS_HOST_URL}      https://upload.docs-sandbox.ea.openprocurement.net
+${API_KEY}          e9c3ccb8e8124f26941d5f9639a4ebc3
+${API_VERSION}      2.5
 ${TENDER_MEAT}      ${True}
 ${LOT_MEAT}         ${True}
 ${ITEM_MEAT}        ${True}
@@ -20,7 +26,8 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      create_tender  level1
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість оголосити тендер
+  Завантажити дані про тендер
+  Можливість зареєструвати актив
 
 
 Можливість знайти лот по ідентифікатору
@@ -34,6 +41,43 @@ ${ITEM_MEAT}        ${True}
 ##############################################################################################
 #             Відображення основних даних лоту
 ##############################################################################################
+
+
+Відображення статусу 'pending.verification'
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      status_view
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Звірити відображення поля status тендера із pending.verification для користувача ${viewer}
+
+
+Відображення статусу 'active.tendering' лоту
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      status_view
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Звірити відображення поля status тендера із active.tendering для користувача ${viewer}
+
+
+Відображення статусу 'active' активів лоту
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      status_view
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Звірити статус лоту для  ${viewer}  active
+
+
+Відображення статусу 'active' активів лоту
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      status_view
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Звірити статус активів  ${viewer}  active
+
 
 Відображення заголовку лоту
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
@@ -157,6 +201,40 @@ ${ITEM_MEAT}        ${True}
   ...      tender_view  level2
   Звірити відображення поля procurementMethodType тендера для усіх користувачів
 
+Відображення поля merchandisingObject
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view  level2
+  Звірити відображення поля merchandisingObject тендера для усіх користувачів
+
+
+Відображення статусу 'unsuccessful'
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      status_view
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Звірити статус неуспішного тендера  ${viewer}  unsuccessful
+
+
+Відображення статусу 'pending' лотів
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      status_view
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Звірити статус лоту для  ${viewer}  pending
+
+
+Відображення статусу 'pending' активів
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      status_view
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Звірити статус активів  ${viewer}  pending
+
 
 ##############################################################################################
 #             Відображення основних даних предмету
@@ -166,7 +244,7 @@ ${ITEM_MEAT}        ${True}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення активів лоту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view  level2
+  ...      tender_lot_view  level2
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити відображення поля description усіх предметів для усіх користувачів
 
@@ -175,7 +253,7 @@ ${ITEM_MEAT}        ${True}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення активів лоту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view  level1
+  ...      tender_lot_view  level1
   Звірити відображення поля classification.scheme усіх предметів для користувача ${viewer}
 
 
@@ -183,7 +261,7 @@ ${ITEM_MEAT}        ${True}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення активів лоту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view  level2
+  ...      tender_lot_view  level2
   Звірити відображення поля classification.id усіх предметів для користувача ${viewer}
 
 
@@ -191,7 +269,7 @@ ${ITEM_MEAT}        ${True}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення активів лоту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view  level2
+  ...      tender_lot_view  level2
   Звірити відображення поля classification.description усіх предметів для користувача ${viewer}
 
 
@@ -199,7 +277,7 @@ ${ITEM_MEAT}        ${True}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення активів лоту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view  level1
+  ...      tender_lot_view  level1
   Звірити відображення поля additionalClassifications[0].scheme усіх предметів для користувача ${viewer}
 
 
@@ -207,7 +285,7 @@ ${ITEM_MEAT}        ${True}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення активів лоту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view  level2
+  ...      tender_lot_view  level2
   Звірити відображення поля additionalClassifications[0].id усіх предметів для користувача ${viewer}
 
 
@@ -215,7 +293,7 @@ ${ITEM_MEAT}        ${True}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення активів лоту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view  level2
+  ...      tender_lot_view  level2
   Звірити відображення поля additionalClassifications[0].description усіх предметів для користувача ${viewer}
 
 
@@ -223,7 +301,7 @@ ${ITEM_MEAT}        ${True}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення активів лоту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view  level2
+  ...      tender_lot_view  level2
   Звірити відображення поля unit.name усіх предметів для користувача ${viewer}
 
 
@@ -239,7 +317,7 @@ ${ITEM_MEAT}        ${True}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення активів лоту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view  level2
+  ...      tender_lot_view  level2
   Звірити відображення поля quantity усіх предметів для користувача ${viewer}
 
 ##############################################################################################

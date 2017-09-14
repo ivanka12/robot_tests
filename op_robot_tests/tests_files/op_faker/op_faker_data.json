@@ -2946,63 +2946,7 @@
                 }
             ],
             "classification": {
-                "scheme": "CAV-PS",
-                "id": "05110000-9",
-                "description": "Молокозаводи"
-            }
-        },
-        {
-            "additionalClassifications": [
-                {
-                    "scheme": "CPVS",
-                    "id": "PA01-7",
-                    "description": "Найм"
-                }
-            ],
-            "classification": {
-                "scheme": "CAV-PS",
-                "id": "06110000-6",
-                "description": "Земельні ділянки призначені для забудови"
-            }
-        },
-        {
-            "additionalClassifications": [
-                {
-                    "scheme": "CPVS",
-                    "id": "PA01-7",
-                    "description": "Найм"
-                }
-            ],
-            "classification": {
-                "scheme": "CAV-PS",
-                "id": "04211000-0",
-                "description": "Промислова заводська, фабрична будівля та їх частини"
-            }
-        },
-        {
-            "additionalClassifications": [
-                {
-                    "scheme": "CPVS",
-                    "id": "PA01-7",
-                    "description": "Найм"
-                }
-            ],
-            "classification": {
-                "scheme": "CAV-PS",
-                "id": "04111000-9",
-                "description": "Квартира"
-            }
-        },
-        {
-            "additionalClassifications": [
-                {
-                    "scheme": "CPVS",
-                    "id": "PA01-7",
-                    "description": "Найм"
-                }
-            ],
-            "classification": {
-                "scheme": "CPV",
+                "scheme": "CAV",
                 "id": "30111000-0",
                 "description": "Текстові процесори"
             }
@@ -3016,7 +2960,7 @@
                 }
             ],
             "classification": {
-                "scheme": "CPV",
+                "scheme": "CAV",
                 "id": "34110000-1",
                 "description": "Легкові автомобілі"
             }
@@ -3030,7 +2974,7 @@
                 }
             ],
             "classification": {
-                "scheme": "CPV",
+                "scheme": "CAV",
                 "id": "39710000-2",
                 "description": "Електричні побутові прилади"
             }
@@ -3044,7 +2988,7 @@
                 }
             ],
             "classification": {
-                "scheme": "CPV",
+                "scheme": "CAV",
                 "id": "16720000-8",
                 "description": "Трактори, що були у використанні"
             }
@@ -3133,60 +3077,12 @@
         }
     ],
     "schemes_other": [
-        "05110000-9",
-        "06110000-6",
-        "04211000-0",
-        "04111000-9",
         "30111000-0",
         "34110000-1",
         "39710000-2",
         "16720000-8"
     ],
     "items_base_data_other": [
-           {
-            "scheme_id": "05110000-9",
-            "description": "Молокозаводи",
-            "description_ru": "Молокозаводы",
-            "description_en": "Dairy factories",
-            "quantity": 5,
-            "unit": {
-                "code": "H87",
-                "name": "штуки"
-            }
-        },
-        {
-            "scheme_id": "06110000-6",
-            "description": "Земельні ділянки призначені для забудови",
-            "description_ru": "Земельные участки предназначены для застройки",
-            "description_en": "The land is intended for development",
-            "quantity": 7,
-            "unit": {
-                "code": "MTK",
-                "name": "метри квадратні"
-            }
-        },
-        {
-            "scheme_id": "04211000-0",
-            "description": "Промислова заводська, фабрична будівля та їх частини",
-            "description_ru": "Промышленная заводская, фабричная здание и их части",
-            "description_en": "Industrial factory, factory building and their parts",
-            "quantity": 12,
-            "unit": {
-                "code": "H87",
-                "name": "штуки"
-            }
-        },
-        {
-            "scheme_id": "04111000-9",
-            "description": "Квартира",
-            "description_ru": "Квартира",
-            "description_en": "Apartment",
-            "quantity": 10,
-            "unit": {
-                "code": "H87",
-                "name": "штуки"
-            }
-        },
         {
             "scheme_id": "30111000-0",
             "description": "Текстові процесори",
