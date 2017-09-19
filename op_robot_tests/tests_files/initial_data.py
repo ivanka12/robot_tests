@@ -137,6 +137,10 @@ def create_fake_url():
     return '{0}/{1}x{2}/{3}/{4}.png'.format(base, size_x, size_y, background_color, font_color)
 
 
+def convert_amount(amount):
+    return  (("{:,}".format(float (amount))).replace(',',' ').replace('.',','))
+
+
 def test_tender_data(params, periods=("enquiry", "tender")):
     now = get_now()
     value_amount = create_fake_amount()  # max value equals to budget of Ukraine in hryvnias
@@ -406,3 +410,10 @@ def test_tender_data_dgf_insider(params):
         data['items'].append(new_item)
 
     return data
+
+
+def addition(value1, value2):
+    if "." in str (value1) or "." in str (value2):
+        return (float (value1) + float (value2))
+    else:
+        return (int (value1) + int (value2))

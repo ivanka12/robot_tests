@@ -47,6 +47,8 @@ from .initial_data import (
     create_fake_dgfDecisionID,
     create_fake_dgfDecisionDate,
     create_fake_tenderAttempts,
+    convert_amount,
+    addition,
 
 )
 from barbecue import chef
@@ -550,3 +552,7 @@ def compare_CAV_groups(length, *items):
             if(i_cav_group == j_cav_group and i != j):
                 return False
     return True
+
+
+def convert_amount_string_to_float(amount_string):
+    return float(amount_string.replace(' ', '').replace(',', '.'))

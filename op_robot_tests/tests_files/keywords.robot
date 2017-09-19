@@ -59,6 +59,12 @@ Set Suite Variable With Default Value
   Log  ${reflog}
 
 
+Дочекатись дати
+  [Arguments]  ${date}
+  ${sleep}=  wait_to_date  ${date}
+  Run Keyword If  ${sleep} > 0  Sleep  ${sleep}
+
+
 Завантажуємо дані про користувачів і майданчики
   Log  ${broker}
   Log  ${role}
