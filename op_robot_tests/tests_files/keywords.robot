@@ -176,11 +176,11 @@ Get Broker Property By Username
   ...          ${USERS.users['${tender_owner}'].tender_data.data.id}
   Log  ${assets_id}
   Run Keyword If  '${MODE}'=='assets'  Set To Dictionary  ${artifact}  assets_id=${assets_id}
-  Run Keyword If  '${MODE}'=='lots'  Set To Dictionary  ${artifact}
-  ...          assets_id=
-  ...          lot_uaid=${USERS.users['${tender_owner}'].tender_data.data.lotID}
-  ...          lot_id=${USERS.users['${tender_owner}'].tender_data.data.id}
-  ...          tender_owner_access_token=${USERS.users['${tender_owner}'].access_token}
+  ...  ELSE IF  '${MODE}'=='lots'  Set To Dictionary  ${artifact}
+      ...          lot_uaid=${USERS.users['${tender_owner}'].tender_data.data.lotID}
+      ...          lot_id=${USERS.users['${tender_owner}'].tender_data.data.id}
+      ...          tender_owner_access_token=${USERS.users['${tender_owner}'].access_token}
+  ...  ELSE  Set To Dictionary  ${artifact}  lot_id=''    assets_id=''
   Log   ${artifact}
   log_object_data  ${artifact}  file_name=artifact  update=${True}  artifact=${True}
 
@@ -192,6 +192,7 @@ Get Broker Property By Username
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${viewer}']}  assets_id=${ARTIFACT.assets_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  assets_id=${ARTIFACT.assets_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  lot_id=${ARTIFACT.lot_id}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${viewer}']}  lot_id=${ARTIFACT.lot_id}
   Log  ${USERS.users['${viewer}'].assets_id}
   log_object_data  ${ARTIFACT}  file_name=artifact  update=${True}  artifact=${True}
 
@@ -667,16 +668,17 @@ Require Failure
   Порівняти об'єкти  ${left}  ${right}
 
 
-Звірити статус скасування тендера
-  [Arguments]  ${username}  ${tender_uaid}
+Звірити статус
+  [Arguments]  ${status}  ${username}  ${tender_uaid}
   Оновити LAST_MODIFICATION_DATE
   Дочекатись синхронізації з майданчиком  ${username}
   Wait until keyword succeeds
   ...      5 min 15 sec
   ...      15 sec
-  ...      Звірити поле тендера із значенням  ${username}  ${tender_uaid}
-  ...      active
-  ...      cancellations[0].status
+  ...      Звірити статус тендера
+  ...      ${username}
+  ...      ${tender_uaid}
+  ...      ${status}
 
 
 Звірити статус скасованого лоту
@@ -710,7 +712,7 @@ Require Failure
   Оновити LAST_MODIFICATION_DATE
   Дочекатись синхронізації з майданчиком  ${username}
   Wait until keyword succeeds
-  ...      20 min 15 sec
+  ...      40 min 15 sec
   ...      15 sec
   ...      Звірити статус тендера
   ...      ${username}
@@ -724,7 +726,7 @@ Require Failure
   Дочекатись синхронізації з майданчиком  ${username}
   Wait until keyword succeeds
   ...      20 min 15 sec
-  ...      15 sec
+  ...      5 sec
   ...      Звірити статус лоту
   ...      ${username}
   ...      ${USERS.users['${username}'].lot_id}

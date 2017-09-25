@@ -7,9 +7,10 @@ Suite Teardown  Test Suite Teardown
 *** Variables ***
 
 ${MODE}              assets
+${RESOURCE}          assets
 @{USED_ROLES}        tender_owner  viewer
-${API_KEY}           b31ef66eabcc44e3b5a5347b57539f49
-
+${NUMBER_OF_ITEMS}   ${3}
+${ASSET_TYPE}        basic
 
 *** Test Cases ***
 Можливість зареєструвати актив

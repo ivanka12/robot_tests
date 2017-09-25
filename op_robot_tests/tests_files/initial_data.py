@@ -146,9 +146,9 @@ def test_tender_data(params, periods=("enquiry", "tender")):
     data["procuringEntity"]["kind"] = "other"
 
     scheme_group = fake.scheme_other()[:3]
-    # for i in range(params['number_of_items']):
-    #     new_item = test_item_data(scheme_group)
-    #     data['items'].append(new_item)
+    for i in range(params['number_of_items']):
+        new_item = test_item_data(scheme_group)
+        data['items'].append(new_item)
 
     if data.get("mode") == "test":
         data["title"] = u"[ТЕСТУВАННЯ] {}".format(data["title"])
@@ -167,16 +167,41 @@ def test_tender_data(params, periods=("enquiry", "tender")):
     return munchify(data)
 
 
-def test_asset_data():
+def test_asset_data(params):
     cpv_group = fake.scheme_other()
     classification= test_item_data(cpv_group)
     value= test_bid_value(1000000,10)
     test_asset_data = {
-    "title": fake.title(),
-    "assetType": "basic",
+        "title": fake.title(),
+        "assetType": "basic",
+        "items": [],
     }
     test_asset_data.update(classification)
     test_asset_data.update(value)
+
+    if params['asset_type'] == "claimRights":
+        scheme_group = fake.scheme_other()[:3]
+        test_asset_data['debt']= {
+            "agreementNumber": random.randint(10, 100), 
+            "value": {
+                "currency": "UAH", 
+                "amount": create_fake_amount()
+            }, 
+            "debtCurrencyValue": {
+                "currency": "USD", 
+                "amount": create_fake_amount()
+            }, 
+            "dateSigned": (get_now() + timedelta(days=-2)).strftime('%Y-%m-%d'), 
+            "debtorType": "legalPerson"
+        }
+        for i in range(params['number_of_items']):
+            new_item = test_item_data(scheme_group)
+            test_asset_data['items'].append(new_item)
+        for index in range(params['number_of_items']):
+            del test_asset_data['items'][index]['assetCustodian']
+        test_asset_data["assetType"] = "claimRights"
+    else:
+        del test_asset_data["items"]
     return munchify(test_asset_data)
 
 

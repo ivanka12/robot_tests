@@ -16,8 +16,10 @@ Resource           resource.robot
   ...      mode=${MODE}
   ...      api_host_url=${API_HOST_URL}
   ...      api_key=${API_KEY}
+  ...      number_of_items=${NUMBER_OF_ITEMS}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
+  Run keyword if  '${MODE}' == 'assets'  Set to dictionary  ${tender_parameters}  asset_type=${ASSET_TYPE}
   Run keyword if  '${MODE}' == 'lots'  Set to dictionary  ${tender_parameters}  assets_id=${USERS.users['${tender_owner}'].assets_id}
   Run keyword if  '${MODE}' == 'dgfOtherAssets'  Set to dictionary  ${tender_parameters}  lot_id=${USERS.users['${tender_owner}'].lot_id}
   ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}

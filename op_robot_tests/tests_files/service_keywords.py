@@ -313,7 +313,7 @@ def prepare_test_tender_data(procedure_intervals, tender_parameters):
     assert intervals['accelerator'] >= 0, \
         "Accelerator should not be less than 0"
     if mode == 'assets':
-        return munchify({'data': test_asset_data()})
+        return munchify({'data': test_asset_data(tender_parameters)})
     if mode == 'lots':
         return munchify({'data': test_lot_data(tender_parameters['assets_id'])})
     if mode == 'dgfOtherAssets':

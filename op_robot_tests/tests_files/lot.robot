@@ -6,10 +6,10 @@ Suite Teardown  Test Suite Teardown
 
 *** Variables ***
 
-${RESOURCE}         lots
-${MODE}             lots
-@{USED_ROLES}       tender_owner  viewer
-${API_KEY}          b31ef66eabcc44e3b5a5347b57539f49
+${MODE}              lots
+${RESOURCE}          lots
+@{USED_ROLES}        tender_owner  viewer
+${NUMBER_OF_ITEMS}   ${3}
 
 
 *** Test Cases ***
@@ -271,22 +271,22 @@ ${API_KEY}          b31ef66eabcc44e3b5a5347b57539f49
   Можливість змінити статус активу на verification
 
 
-Відображення статусу 'verification'
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      verification_lot
-  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити статус лоту для  ${viewer}  verification
+# Відображення статусу 'verification'
+#   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
+#   ...      viewer
+#   ...      ${USERS.users['${viewer}'].broker}
+#   ...      verification_lot
+#   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+#   Звірити статус  verification  ${viewer}  ${TENDER['TENDER_UAID']}
 
 
-Відображення статусу 'verification' активів лоту 
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення статусів активів
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      verification_lot
-  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити статус активів  ${viewer}  verification
+# Відображення статусу 'verification' активів лоту 
+#   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення статусів активів
+#   ...      viewer
+#   ...      ${USERS.users['${viewer}'].broker}
+#   ...      verification_lot1
+#   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+#   Звірити статус активів  ${viewer}  verification
 
 
 Відображення статусу 'active.salable'
@@ -295,7 +295,7 @@ ${API_KEY}          b31ef66eabcc44e3b5a5347b57539f49
   ...      ${USERS.users['${viewer}'].broker}
   ...      salable_lot
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити статус лоту для  ${viewer}  active.salable
+  Звірити статус  active.salable  ${viewer}  ${TENDER['TENDER_UAID']}
 
 
 Відображення статусу 'active' активів лоту
@@ -316,13 +316,22 @@ ${API_KEY}          b31ef66eabcc44e3b5a5347b57539f49
   Можливість розформувати лот
 
 
+Відображення статусу 'pending.dissolution'
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      dissolved_lot
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Звірити статус  pending.dissolution  ${viewer}  ${TENDER['TENDER_UAID']}
+
+
 Відображення статусу 'dissolved'
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
   ...      dissolved_lot
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити статус лоту для  ${viewer}  dissolved
+  Звірити статус  dissolved  ${viewer}  ${TENDER['TENDER_UAID']}
 
 
 Відображення статусу 'pending' активів лоту після розформування лоту

@@ -35,11 +35,13 @@ Library  openprocurement_client.utils
 #  Uncomment this line if there is need to precess files operations without DS.
 # ${ds_api_wraper}=  set variable  ${None}
   ${ds_api_wraper}=  prepare_ds_api_wrapper  ${ds_host_url}  ${auth_ds}
-  ${asset_api_wrapper}=  prepare_asset_api_wrapper  ${USERS.users['${username}'].api_key_registry}  assets  ${api_host_url}  ${api_version}  ${ds_api_wraper}
-  ${lot_api_wrapper}=  prepare_asset_api_wrapper  ${USERS.users['${username}'].api_key_registry}  lots  ${api_host_url}  ${api_version}  ${ds_api_wraper}
-  ${api_wrapper}=  prepare_api_wrapper  ${api_key}  ${resource}  ${api_host_url}  ${api_version}  ${ds_api_wraper}
+  ${asset_api_wrapper}=  prepare_asset_api_wrapper  ${USERS.users['${username}'].api_key_registry}  assets  ${registry_api_host_url}  ${registry_api_version}
+  ${lot_api_wrapper}=  prepare_lot_api_wrapper  ${USERS.users['${username}'].api_key_registry}  lots  ${registry_api_host_url}  ${registry_api_version}
+  ${api_wrapper}=  Run Keyword If  '${MODE}'=='assets' or '${MODE}' == 'lots'
+  ...    prepare_api_wrapper  ${USERS.users['${username}'].api_key_registry}  ${resource}  ${registry_api_host_url}  ${registry_api_version}
+  ...    ELSE  prepare_api_wrapper  ${USERS.users['${username}'].api_key}  ${resource}  ${api_host_url}  ${api_version}  ${ds_api_wraper}
   Set To Dictionary  ${USERS.users['${username}']}  asset_client=${asset_api_wrapper}
-  Set To Dictionary  ${USERS.users['${username}']}  lot_client=${asset_api_wrapper}
+  Set To Dictionary  ${USERS.users['${username}']}  lot_client=${lot_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  client=${api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  access_token=${EMPTY}
   ${id_map}=  Create Dictionary
@@ -185,7 +187,9 @@ Library  openprocurement_client.utils
   Set To Dictionary  ${USERS.users['${username}']}   access_token=${access_token}
   Set To Dictionary  ${USERS.users['${username}']}   tender_data=${tender}
   Log   ${USERS.users['${username}'].tender_data}
-  Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/${resource}/${tender.data.id}${\n}  WARN
+  Run Keyword if  '${MODE}' == 'assets' or '${MODE}' == 'lots'
+  ...  Log  ${\n}${registry_api_host_url}/api/${registry_api_version}/${resource}/${tender.data.id}${\n}  WARN
+  ...  ELSE  Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/${resource}/${tender.data.id}${\n}  WARN
   ${ID}=  Run Keyword if  '${MODE}' == 'assets'  Set Variable  ${tender.data.assetID}
   ...  ELSE IF  '${MODE}' == 'lots'  Set Variable  ${tender.data.lotID}
   ...  ELSE  Set Variable  ${tender.data.auctionID}
@@ -311,7 +315,7 @@ Library  openprocurement_client.utils
 Розформувати лот
   [Arguments]  ${username}  ${tender_uaid}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  Set_To_Object  ${tender.data}  status  dissolved
+  Set_To_Object  ${tender.data}  status  pending.dissolution
   Log  ${tender}
   Call Method  ${USERS.users['${username}'].client}  patch_tender  ${tender}
 

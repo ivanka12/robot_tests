@@ -9,12 +9,9 @@ Suite Teardown  Test Suite Teardown
 ${MODE}             openeu
 @{USED_ROLES}       tender_owner  provider  provider1  provider2  viewer
 
-${RESOURCE}         auctions
-${API_HOST_URL}     https://lb.api-sandbox.ea.openprocurement.org
-${DS_HOST_URL}      https://upload.docs-sandbox.ea.openprocurement.net
-${API_KEY}          e9c3ccb8e8124f26941d5f9639a4ebc3
-${API_VERSION}      2.5
+
 ${TENDER_MEAT}      ${True}
+${NUMBER_OF_ITEMS}  ${0}
 ${LOT_MEAT}         ${True}
 ${ITEM_MEAT}        ${True}
 
@@ -43,13 +40,13 @@ ${ITEM_MEAT}        ${True}
 ##############################################################################################
 
 
-Відображення статусу 'pending.verification'
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      status_view
-  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити відображення поля status тендера із pending.verification для користувача ${viewer}
+# Відображення статусу 'pending.verification'
+#   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
+#   ...      viewer
+#   ...      ${USERS.users['${viewer}'].broker}
+#   ...      status_view
+#   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+#   Звірити статус  pending.verification  ${viewer}  ${TENDER['TENDER_UAID']}
 
 
 Відображення статусу 'active.tendering' лоту
@@ -58,16 +55,16 @@ ${ITEM_MEAT}        ${True}
   ...      ${USERS.users['${viewer}'].broker}
   ...      status_view
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити відображення поля status тендера із active.tendering для користувача ${viewer}
+  Звірити статус  active.tendering  ${viewer}  ${TENDER['TENDER_UAID']}
 
 
-Відображення статусу 'active' активів лоту
+Відображення статусу 'active.auction' лоту
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
   ...      status_view
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити статус лоту для  ${viewer}  active
+  Звірити статус лоту для  ${viewer}  active.auction
 
 
 Відображення статусу 'active' активів лоту
@@ -213,27 +210,27 @@ ${ITEM_MEAT}        ${True}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      status_view
+  ...      status_view_unsuccessful
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити статус неуспішного тендера  ${viewer}  unsuccessful
 
 
-Відображення статусу 'pending' лотів
+Відображення статусу 'active.salable' лотів
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      status_view
+  ...      status_view_unsuccessful
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити статус лоту для  ${viewer}  pending
+  Звірити статус лоту для  ${viewer}  active.salable
 
 
-Відображення статусу 'pending' активів
+Відображення статусу 'active' активів
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      status_view
+  ...      status_view_unsuccessful
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити статус активів  ${viewer}  pending
+  Звірити статус активів  ${viewer}  active
 
 
 ##############################################################################################

@@ -1,5 +1,6 @@
 from openprocurement_client.client import Client
-from openprocurement_client.registry_client import LotsClient, AssetsClient
+from openprocurement_client.resources.assets import AssetsClient
+from  openprocurement_client.resources.lots import LotsClient
 from openprocurement_client.document_service_client \
     import DocumentServiceClient
 from openprocurement_client.exceptions import IdNotFound
@@ -41,9 +42,9 @@ class StableLotClient(LotsClient):
         return super(StableLotClient, self).request(*args, **kwargs)
 
 
-def prepare_lot_api_wrapper(key, resource, host_url, api_version, ds_client=None):
-    return StableLotClient(key, resource, host_url, api_version,
-                        ds_client=ds_client)
+def prepare_lot_api_wrapper(key, resource, host_url, api_version):
+    return StableLotClient(key, resource, host_url, api_version)
+
 
 class StableAssetClient(AssetsClient):
     @retry(stop_max_attempt_number=100, wait_random_min=500,
@@ -52,9 +53,8 @@ class StableAssetClient(AssetsClient):
         return super(StableAssetClient, self).request(*args, **kwargs)
 
 
-def prepare_asset_api_wrapper(key, resource, host_url, api_version, ds_client=None):
-    return StableAssetClient(key, resource, host_url, api_version,
-                        ds_client=ds_client)
+def prepare_asset_api_wrapper(key, resource, host_url, api_version):
+    return StableAssetClient(key, resource, host_url, api_version)
 
 def prepare_api_wrapper(key, resource, host_url, api_version, ds_client=None):
     return StableClient(key, resource, host_url, api_version,
