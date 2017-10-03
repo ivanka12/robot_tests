@@ -4,7 +4,7 @@ users:
             assets:   [test.quintagroup.com, test.quintagroup.com]
             lots:     [test.quintagroup.com, test.quintagroup.com]
             tenders:  [test.quintagroup.com, test.quintagroup.com]
-            auctions: [test.quintagroup.com, 30852434db2e4574b57d37bda228ed2e]
+            auctions: [test.quintagroup.com, bc698baa8b814908bc75405ed3d63548]
         api_key:           e9c3ccb8e8124f26941d5f9639a4ebc3
         api_key_registry:  b31ef66eabcc44e3b5a5347b57539f49
         broker:   Quinta
@@ -13,7 +13,7 @@ users:
             assets:   [test.quintagroup.com, test.quintagroup.com]
             lots:     [test.quintagroup.com, test.quintagroup.com]
             tenders:  [test.quintagroup.com, test.quintagroup.com]
-            auctions: [test.quintagroup.com, 30852434db2e4574b57d37bda228ed2e]
+            auctions: [test.quintagroup.com, bc698baa8b814908bc75405ed3d63548]
         api_key:           e9c3ccb8e8124f26941d5f9639a4ebc3
         api_key_registry:  b31ef66eabcc44e3b5a5347b57539f49
         broker:   Quinta
@@ -22,7 +22,7 @@ users:
             assets:   [test.quintagroup.com, test.quintagroup.com]
             lots:     [test.quintagroup.com, test.quintagroup.com]
             tenders:  [test.quintagroup.com, test.quintagroup.com]
-            auctions: [test.quintagroup.com, 30852434db2e4574b57d37bda228ed2e]
+            auctions: [test.quintagroup.com, bc698baa8b814908bc75405ed3d63548]
         api_key:           e9c3ccb8e8124f26941d5f9639a4ebc3
         api_key_registry:  b31ef66eabcc44e3b5a5347b57539f49
         broker:   Quinta
@@ -31,7 +31,7 @@ users:
             assets:   [test.quintagroup.com, test.quintagroup.com]
             lots:     [test.quintagroup.com, test.quintagroup.com]
             tenders:  [test.quintagroup.com, test.quintagroup.com]
-            auctions: [test.quintagroup.com, 30852434db2e4574b57d37bda228ed2e]
+            auctions: [test.quintagroup.com, bc698baa8b814908bc75405ed3d63548]
         api_key:           e9c3ccb8e8124f26941d5f9639a4ebc3
         api_key_registry:  b31ef66eabcc44e3b5a5347b57539f49
         broker:   Quinta
@@ -40,7 +40,7 @@ users:
             assets:   [test.quintagroup.com, test.quintagroup.com]
             lots:     [test.quintagroup.com, test.quintagroup.com]
             tenders:  [test.quintagroup.com, test.quintagroup.com]
-            auctions: [test.quintagroup.com, 30852434db2e4574b57d37bda228ed2e]
+            auctions: [test.quintagroup.com, bc698baa8b814908bc75405ed3d63548]
         api_key:  ""
         api_key_registry: ""
         broker:   Quinta

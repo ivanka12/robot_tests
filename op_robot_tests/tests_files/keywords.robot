@@ -164,6 +164,7 @@ Get Broker Property By Username
 Створити артефакт
   ${artifact}=  Create Dictionary
   ...      api_version=${api_version}
+  ...      tender_uaid=${TENDER['TENDER_UAID']}
   ...      last_modification_date=${TENDER['LAST_MODIFICATION_DATE']}
   ...      mode=${MODE}
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
@@ -189,11 +190,14 @@ Get Broker Property By Username
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   ${MODE}=  Get Variable Value  ${MODE}  ${ARTIFACT.mode}
+  ${TENDER}=  Create Dictionary  TENDER_UAID=${ARTIFACT.tender_uaid}  LAST_MODIFICATION_DATE=${ARTIFACT.last_modification_date}  LOT_ID=${Empty}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${viewer}']}  assets_id=${ARTIFACT.assets_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  assets_id=${ARTIFACT.assets_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  lot_id=${ARTIFACT.lot_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${viewer}']}  lot_id=${ARTIFACT.lot_id}
   Log  ${USERS.users['${viewer}'].assets_id}
+  Set Suite Variable  ${MODE}
+  Set Suite Variable  ${TENDER}
   log_object_data  ${ARTIFACT}  file_name=artifact  update=${True}  artifact=${True}
 
 
