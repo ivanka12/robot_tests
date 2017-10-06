@@ -1,8 +1,8 @@
 users:
     Tender_Owner:
         auth_ds:
-            assets:   [test.quintagroup.com, test.quintagroup.com]
-            lots:     [test.quintagroup.com, test.quintagroup.com]
+            assets:   [test.quintagroup.com, a86aa406a42b4d8e919e5e77754eca35]
+            lots:     [test.quintagroup.com, a86aa406a42b4d8e919e5e77754eca35]
             tenders:  [test.quintagroup.com, test.quintagroup.com]
             auctions: [test.quintagroup.com, bc698baa8b814908bc75405ed3d63548]
         api_key:           e9c3ccb8e8124f26941d5f9639a4ebc3
@@ -37,8 +37,8 @@ users:
         broker:   Quinta
     Tender_Viewer:
         auth_ds:
-            assets:   [test.quintagroup.com, test.quintagroup.com]
-            lots:     [test.quintagroup.com, test.quintagroup.com]
+            assets:   [test.quintagroup.com, a86aa406a42b4d8e919e5e77754eca35]
+            lots:     [test.quintagroup.com, a86aa406a42b4d8e919e5e77754eca35]
             tenders:  [test.quintagroup.com, test.quintagroup.com]
             auctions: [test.quintagroup.com, bc698baa8b814908bc75405ed3d63548]
         api_key:  ""

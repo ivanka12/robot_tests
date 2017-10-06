@@ -176,7 +176,9 @@ Get Broker Property By Username
   Run Keyword If  '${MODE}'=='assets'  Append To List  ${assets_id}
   ...          ${USERS.users['${tender_owner}'].tender_data.data.id}
   Log  ${assets_id}
-  Run Keyword If  '${MODE}'=='assets'  Set To Dictionary  ${artifact}  assets_id=${assets_id}
+  Run Keyword If  '${MODE}'=='assets'  Set To Dictionary  ${artifact}
+  ...  assets_id=${assets_id}
+  ...  asset_access_token=${USERS.users['${tender_owner}'].access_token}
   ...  ELSE IF  '${MODE}'=='lots'  Set To Dictionary  ${artifact}
       ...          lot_uaid=${USERS.users['${tender_owner}'].tender_data.data.lotID}
       ...          lot_id=${USERS.users['${tender_owner}'].tender_data.data.id}
@@ -195,6 +197,7 @@ Get Broker Property By Username
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  assets_id=${ARTIFACT.assets_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  lot_id=${ARTIFACT.lot_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${viewer}']}  lot_id=${ARTIFACT.lot_id}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  asset_access_token=${ARTIFACT.asset_access_token}
   Log  ${USERS.users['${viewer}'].assets_id}
   Set Suite Variable  ${MODE}
   Set Suite Variable  ${TENDER}

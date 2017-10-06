@@ -172,8 +172,9 @@ def test_asset_data(params):
     classification= test_item_data(cpv_group)
     value= test_bid_value(1000000,10)
     test_asset_data = {
-        "title": fake.title(),
+        "title": u"[ТЕСТУВАННЯ] {}".format(fake.title()),
         "assetType": "basic",
+        "mode": "test",
         "items": [],
     }
     test_asset_data.update(classification)
@@ -209,8 +210,9 @@ def test_lot_data(assets_id):
     cpv_group = fake.scheme_other()
     classification= test_item_data(cpv_group)
     test_lot_data = {
-        "title": fake.title(), 
-        "lotType": "basic"
+        "title": u"[ТЕСТУВАННЯ] {}".format(fake.title()), 
+        "lotType": "basic",
+        "mode": "test"
     }
     test_lot_data['lotCustodian']= classification['assetCustodian']
     test_lot_data['description']= classification['description']
@@ -305,7 +307,7 @@ def test_tender_data_dgf_other(params):
     data["dgfDecisionDate"] =  u"2016-11-17"
     data["dgfDecisionID"] = u"219560"
     data["merchandisingObject"] = params['lot_id']
-    data["status"] = "pending.verification"
+    data["status"] = "draft"
     data['dgfID'] = fake.dgfID()
     data['tenderAttempts'] =  fake.random_int(min=1, max=4)
     del data["procuringEntity"]

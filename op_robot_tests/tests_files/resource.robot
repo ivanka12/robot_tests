@@ -8,5 +8,5 @@ ${role}          viewer
 ${api_key}		 e9c3ccb8e8124f26941d5f9639a4ebc3
 
 ${registry_api_host_url}      https://lb.api-sandbox.registry.ea.openprocurement.net
-${registry_ds_host_url}       http://upload.docs.registry-sandbox.ea.openrpocurement.net
+${registry_ds_host_url}       https://upload.docs-sandbox.registry.ea.openprocurement.net
 ${registry_api_version}       0.1

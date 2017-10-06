@@ -1,4 +1,4 @@
-from openprocurement_client.client import Client
+from openprocurement_client.resources.tenders import Client
 from openprocurement_client.resources.assets import AssetsClient
 from  openprocurement_client.resources.lots import LotsClient
 from openprocurement_client.resources.document_service \
@@ -42,8 +42,9 @@ class StableLotClient(LotsClient):
         return super(StableLotClient, self).request(*args, **kwargs)
 
 
-def prepare_lot_api_wrapper(key, resource, host_url, api_version):
-    return StableLotClient(key, resource, host_url, api_version)
+def prepare_lot_api_wrapper(key, resource, host_url, api_version, ds_config=None):
+    print(ds_config)
+    return StableLotClient(key, resource, host_url, api_version, ds_config=ds_config)
 
 
 class StableAssetClient(AssetsClient):
@@ -53,12 +54,14 @@ class StableAssetClient(AssetsClient):
         return super(StableAssetClient, self).request(*args, **kwargs)
 
 
-def prepare_asset_api_wrapper(key, resource, host_url, api_version):
-    return StableAssetClient(key, resource, host_url, api_version)
+def prepare_asset_api_wrapper(key, resource, host_url, api_version, ds_config=None):
+    print(ds_config)
+    return StableAssetClient(key, resource, host_url, api_version, ds_config=ds_config)
 
-def prepare_api_wrapper(key, resource, host_url, api_version, ds_client=None):
-    return StableClient(key, resource, host_url, api_version,
-                        ds_client=ds_client)
+
+def prepare_api_wrapper(key, resource, host_url, api_version, ds_config=None):
+    print(ds_config)
+    return StableClient(key, resource, host_url, api_version, ds_config=ds_config)
 
 
 def prepare_ds_api_wrapper(ds_host_url, auth_ds):

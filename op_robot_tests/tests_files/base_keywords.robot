@@ -106,7 +106,7 @@ Resource           resource.robot
 Можливість змінити статус активу на ${status}
   Set_To_Object  ${USERS.users['${tender_owner}'].tender_data.data}  status  ${status}
   Log  ${USERS.users['${tender_owner}'].tender_data}
-  Call Method  ${USERS.users['${tender_owner}'].client}  patch_tender  ${USERS.users['${tender_owner}'].tender_data}
+  Call Method  ${USERS.users['${tender_owner}'].client}  patch_tender  ${USERS.users['${tender_owner}'].tender_data.data.id}  ${USERS.users['${tender_owner}'].tender_data}
 
 
 Звірити відображення поля ${field} документа ${doc_id} із ${left} для користувача ${username}
