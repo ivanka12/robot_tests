@@ -1,7 +1,7 @@
 from openprocurement_client.client import Client
 from openprocurement_client.resources.assets import AssetsClient
 from  openprocurement_client.resources.lots import LotsClient
-from openprocurement_client.document_service_client \
+from openprocurement_client.resources.document_service \
     import DocumentServiceClient
 from openprocurement_client.exceptions import IdNotFound
 from restkit.errors import RequestFailed, BadStatusLine

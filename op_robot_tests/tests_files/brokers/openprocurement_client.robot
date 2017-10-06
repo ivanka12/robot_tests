@@ -34,11 +34,11 @@ Library  openprocurement_client.utils
 
 #  Uncomment this line if there is need to precess files operations without DS.
 # ${ds_api_wraper}=  set variable  ${None}
-  ${ds_api_wraper}=  prepare_ds_api_wrapper  ${ds_host_url}  ${auth_ds}
+  ${ds_api_wraper}=  prepare_ds_api_wrapper  ${registry_ds_host_url}  ${auth_ds}
   ${asset_api_wrapper}=  prepare_asset_api_wrapper  ${USERS.users['${username}'].api_key_registry}  assets  ${registry_api_host_url}  ${registry_api_version}
   ${lot_api_wrapper}=  prepare_lot_api_wrapper  ${USERS.users['${username}'].api_key_registry}  lots  ${registry_api_host_url}  ${registry_api_version}
   ${api_wrapper}=  Run Keyword If  '${MODE}'=='assets' or '${MODE}' == 'lots'
-  ...    prepare_api_wrapper  ${USERS.users['${username}'].api_key_registry}  ${resource}  ${registry_api_host_url}  ${registry_api_version}
+  ...    prepare_api_wrapper  ${USERS.users['${username}'].api_key_registry}  ${resource}  ${registry_api_host_url}  ${registry_api_version}  ${ds_api_wraper}
   ...    ELSE  prepare_api_wrapper  ${USERS.users['${username}'].api_key}  ${resource}  ${api_host_url}  ${api_version}  ${ds_api_wraper}
   Set To Dictionary  ${USERS.users['${username}']}  asset_client=${asset_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  lot_client=${lot_api_wrapper}

@@ -44,6 +44,16 @@ ${ASSET_TYPE}        basic
   Звірити відображення поля status тендера із pending для користувача ${viewer}
 
 
+
+# Можливість додати документацію до лоту
+#   [Tags]   ${USERS.users['${tender_owner}'].broker}: Додання документації
+#   ...      tender_owner
+#   ...      ${USERS.users['${tender_owner}'].broker}
+#   ...      add_tender_doc  level2
+#   [Teardown]  Оновити LAST_MODIFICATION_DATE
+#   Можливість додати документацію до тендера
+
+
 Відображення заголовку активу
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних активу
   ...      viewer
