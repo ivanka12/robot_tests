@@ -312,3 +312,10 @@ Resource           resource.robot
   ...      ${TENDER['TENDER_UAID']}
   ...      ${0}
   Run Keyword And Ignore Error  Remove From Dictionary  ${USERS.users['${viewer}'].tender_data.contracts[0]}  status
+
+
+
+Можливість завантажити протокол аукціону в авард ${award_index} користувачем ${username}
+  ${auction_protocol_path}  ${file_title}  ${file_content}=  create_fake_doc
+  Run As  ${username}  Завантажити протокол аукціону в авард  ${TENDER['TENDER_UAID']}  ${auction_protocol_path}  ${award_index}
+  Remove File  ${auction_protocol_path}

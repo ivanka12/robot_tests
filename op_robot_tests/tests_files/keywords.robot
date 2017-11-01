@@ -718,6 +718,19 @@ Require Failure
   ...      unsuccessful
 
 
+Звірити cтатус неуспішного тендера
+  [Arguments]  ${username}  ${tender_uaid}
+  Оновити LAST_MODIFICATION_DATE
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      40 min 15 sec
+  ...      15 sec
+  ...      Звірити статус тендера
+  ...      ${username}
+  ...      ${tender_uaid}
+  ...      unsuccessful
+
+
 Дочекатись дати початку прийому пропозицій
   [Arguments]  ${username}  ${tender_uaid}
   # This tries to get the date from current user's procurement data cache.
