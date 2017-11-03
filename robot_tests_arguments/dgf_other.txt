@@ -1,5 +1,6 @@
 -v MODE:dgfOtherAssets
 
+-v minNumberOfQualifiedBids:2
 -v NUMBER_OF_ITEMS:3
 
 -i create_tender
@@ -66,6 +67,18 @@
 -i approve_second_award_protocol
 -i confirm_second_award
 -i second_award_active_status
+
+
+
+-i qualification
+-i qualification_add_auction_protocol_to_bid
+-i qualification_approve_doc_to_first_award
+-i qualification_approve_first_award
+-i qualification_cancel_first_award_qualification
+-i qualification_add_auction_protocol_to_second_bid
+-i qualification_approve_doc_to_second_award
+-i qualification_approve_second_award
+
 
 -i contract_sign
 -i contract_sign_upload

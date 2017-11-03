@@ -24,6 +24,14 @@ ${award_index}      ${0}
   \   ${resp}=  Run As  ${username}  Пошук тендера по ідентифікатору   ${TENDER['TENDER_UAID']}
 
 
+Можливість дочекатись дати закінчення прийому пропозицій
+  [Tags]   ${USERS.users['${viewer}'].broker}: Процес кваліфікації
+  ...      viewer  tender_owner
+  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
+  ...      tenderPeriod_end  level1
+  Дочекатись дати закінчення прийому пропозицій  ${viewer}  ${TENDER['TENDER_UAID']}
+
+
 Можливість дочекатись дати початку кваліфікації
   [Tags]   ${USERS.users['${viewer}'].broker}: Процес кваліфікації
   ...      viewer  tender_owner

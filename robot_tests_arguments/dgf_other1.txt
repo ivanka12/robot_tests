@@ -1,0 +1,47 @@
+-v MODE:dgfOtherAssets
+
+-v minNumberOfQualifiedBids:1
+-v NUMBER_OF_ITEMS:3
+
+-i create_tender
+-i find_tender
+-i tender_view
+-i tender_view_tenderPeriod
+-i tender_view_contractPeriod
+-i tender_view_unit_code
+-i tender_view_tenderAttempts
+
+-i modify_auction_value
+-i modify_auction_step
+-i modify_auction_title_ua
+-i modify_auction_guarantee
+-i modify_auction_periods
+-i modify_tenderAttempts
+-i modify_tender
+-i add_tender_doc
+-i add_tender_doc_content
+-i add_tender_illustration
+-i add_tender_tech_specifications
+-i add_tender_notice
+-i add_tender_presentation
+-i add_tender_asset_familiarization
+-i ask_question_to_tender
+  -i answer_question_to_tender
+-i ask_question_to_item
+  -i answer_question_to_item
+
+-i make_bid_by_provider_without_qualification
+-i make_bid_without_parameters
+-i make_bid_by_provider
+  -i modify_bid_by_provider
+-i bid_view_in_tendering_period
+
+
+-i qualification
+-i qualification_add_auction_protocol_to_bid
+-i qualification_approve_doc_to_first_award
+-i qualification_approve_first_award
+-i tenderPeriod_end
+
+-i contract_sign
+-i contract_sign_upload

@@ -253,6 +253,7 @@ def test_item_data(scheme):
                 "startDate": (get_now() + timedelta(minutes=70)).isoformat(),
                 "endDate": (get_now() + timedelta(minutes=100)).isoformat()
     }
+    data["quantity"] = round(random.uniform(1, 10), 3)
     return munchify(data)
 
 
@@ -261,6 +262,8 @@ def test_tender_data_dgf_other(params):
 
     data['dgfID'] = fake.dgfID()
     data['tenderAttempts'] =  fake.random_int(min=1, max=4)
+    if int(params['minNumberOfQualifiedBids']) > 0:
+        data['minNumberOfQualifiedBids'] = int(params['minNumberOfQualifiedBids'])
     del data["procuringEntity"]
 
     for i in range(params['number_of_items']):
