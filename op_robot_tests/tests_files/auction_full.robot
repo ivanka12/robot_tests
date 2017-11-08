@@ -7,6 +7,12 @@ Library         Selenium2Library
 
 *** Variables ***
 @{USED_ROLES}  viewer  provider  provider1
+${round1_bidder1}  id=stage-1
+${round1_bidder2}  id=stage-2
+${round2_bidder1}  id=stage-4
+${round2_bidder2}  id=stage-5
+${round3_bidder1}  id=stage-7
+${round3_bidder2}  id=stage-8
 
 
 *** Test Cases ***
@@ -79,9 +85,11 @@ Library         Selenium2Library
   ...      ${USERS.users['${provider}'].broker}
   ...      auction
   Вибрати учасника, який може зробити ставку
-  Поставити максимально можливу ставку
+  Спробувати вказати невалідну тривалість дії контракту
+  Спробувати вказати невалідний відсоток щорічних платежів
+  Поставити мінімально можливу ставку  8  220  90
   Дочекатись учасником закінчення стадії ставок
-  Перевірити чи ставка була прийнята
+  Перевірити чи ставка була прийнята  ${round1_bidder1}
 
 
 Можливість проведення 1 го раунду аукціону для другого учасника
@@ -90,10 +98,9 @@ Library         Selenium2Library
   ...      ${USERS.users['${provider1}'].broker}
   ...      auction
   Вибрати учасника, який може зробити ставку
-  Поставити ставку більшу від максимальної на 1 грн
-  Поставити максимально можливу ставку
+  Поставити мінімально можливу ставку  8  220  90
   Дочекатись учасником закінчення стадії ставок
-  Перевірити чи ставка була прийнята
+  Перевірити чи ставка була прийнята  ${round1_bidder2}
 
 
 Можливість дочекатись другого раунду
@@ -112,11 +119,9 @@ Library         Selenium2Library
   ...      ${USERS.users['${provider}'].broker}
   ...      auction
   Вибрати учасника, який може зробити ставку
-  Поставити малу ставку в 1 грн
-  Відмінитити ставку
-  Поставити максимально можливу ставку
+  Поставити мінімально можливу ставку  8  220  85
   Дочекатись учасником закінчення стадії ставок
-  Перевірити чи ставка була прийнята
+  Перевірити чи ставка була прийнята  ${round2_bidder1}
 
 
 Можливість проведення 2 го раунду аукціону для другого учасника
@@ -124,12 +129,10 @@ Library         Selenium2Library
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
   ...      auction
-  Дочекатись учасником закінчення стадії ставок
   Вибрати учасника, який може зробити ставку
-  Поставити максимально можливу ставку
+  Поставити мінімально можливу ставку  8  220  85
   Дочекатись учасником закінчення стадії ставок
-  Перевірити чи ставка була прийнята
-
+  Перевірити чи ставка була прийнята  ${round2_bidder2}
 
 Можливість дочекатись третього раунду
   [Tags]   ${USERS.users['${viewer}'].broker}: Процес аукціону
@@ -147,10 +150,9 @@ Library         Selenium2Library
   ...      ${USERS.users['${provider}'].broker}
   ...      auction
   Вибрати учасника, який може зробити ставку
-  Поставити нульову ставку
-  Поставити максимально можливу ставку
+  Поставити мінімально можливу ставку  7  220  80
   Дочекатись учасником закінчення стадії ставок
-  Перевірити чи ставка була прийнята
+  Перевірити чи ставка була прийнята  ${round3_bidder1}
 
 
 Можливість проведення 3 го раунду аукціону для другого учасника
@@ -159,10 +161,10 @@ Library         Selenium2Library
   ...      ${USERS.users['${provider1}'].broker}
   ...      auction
   Вибрати учасника, який може зробити ставку
-  Поставити малу ставку в 1 грн
-  Змінити ставку на максимальну
+  Поставити мінімально можливу ставку  7  220  80
+  Відмінитити ставку
   Дочекатись учасником закінчення стадії ставок
-  Перевірити чи ставка була прийнята
+  Перевірити чи ставка була відмінена  ${round3_bidder2}
 
 
 Можливість дочекатися завершення аукціону
@@ -318,44 +320,46 @@ Library         Selenium2Library
   Set Global Variable  ${CURRENT_USER}
 
 
-Поставити максимально можливу ставку
-  Wait Until Page Contains Element    id=max_bid_amount_price
-  ${last_amount}=     Get Text        id=max_bid_amount_price
-  ${last_amount}=  convert_amount_string_to_float  ${last_amount}
-  ${value}=  Convert To Number  0.01
-  ${last_amount}=  subtraction  ${last_amount}  ${value}
-  Поставити ставку   ${last_amount}   Заявку прийнято
+Спробувати вказати невалідну тривалість дії контракту
+  Поставити ставку еско  16  6  99  css=input:invalid
+  Поставити ставку еско  20  6  99  css=input:invalid
+  Поставити ставку еско  14  365  99   css=input:invalid
+  Поставити ставку еско  12   2132  99   css=input:invalid
+  Поставити ставку еско  45   2132  99   css=input:invalid
+  Поставити ставку еско  0  0  99   Ви не можете встановити 0 днів та 0 років
 
 
-Поставити ставку більшу від максимальної на ${extra_amount} грн
-  Wait Until Page Contains Element  id=max_bid_amount_price
-  ${last_amount}=  Get Text         id=max_bid_amount_price
-  ${last_amount}=  convert_amount_string_to_float  ${last_amount}
-  ${extra_amount}=  convert_amount_string_to_float  ${extra_amount}
-  ${last_amount}=  Evaluate  ${last_amount}+${extra_amount}
-  Поставити ставку  ${last_amount}  Надто висока заявка
+Спробувати вказати невалідний відсоток щорічних платежів
+    Поставити ставку еско  2  123  79   Percentage value must be between 80.0 and 100
 
 
-Поставити ставку
-  [Arguments]  ${amount}  ${msg}
-  ${amount}=  Convert To String  ${amount}
-  Set To Dictionary  ${USERS['${CURRENT_USER}']}  last_amount=${amount}
-  Click Element  id=clear-bid-button
-  Wait Until Page Does Not Contain Element  xpath=//alert[contains(@class, 'bids-form')]  7s
-  Input Text     id=bid-amount-input  ${amount}
-  Click Element  id=place-bid-button
-  Wait Until Page Contains  ${msg}  30s
+Поставити мінімально можливу ставку
+  [Arguments]  ${years}  ${days}  ${percent}
+  Поставити ставку еско  ${years}  ${days}  ${percent}   Заявку прийнято
+
+
+Поставити ставку еско
+  [Arguments]  ${years}  ${days}  ${percent}  ${msg}
+  Input Text  id=contract-duration-years-input  ${years}
+  Input Text  id=contract-duration-days-input  ${days}
+  Input Text  id=yearly-payments-percentage  ${percent}
+  sleep  1s
+  Capture Page Screenshot
+  Highlight Elements With Text On Time    Зробити заявку
+  Click Element                id=place-bid-button
+  Run Keyword If  "${msg}" == "css=input:invalid"           Wait Until Element Is Visible  ${msg}
+  ...    ELSE     Wait Until Page Contains  ${msg}  10s
+  ${current_VPN}=  Get text  id=current-npv
+  Set Global Variable   ${current_VPN}
+  Capture Page Screenshot
 
 
 Відмінитити ставку
-  Click Element             id=cancel-bid-button
-  Wait Until Page Contains  Заявку відмінено  10s
-
-
-Змінити ставку на максимальну
-  Click Element  id=edit-bid-button
-  Click Element  id=clear-bid-button
-  Поставити максимально можливу ставку
+  Highlight Elements With Text On Time   Відмінити заявку
+  Click Element                id=cancel-bid-button
+  Wait Until Page Contains     Заявку відмінено      10s
+  Highlight Elements With Text On Time    Заявку відмінено
+  Capture Page Screenshot
 
 
 Вибрати учасника, який може зробити ставку
@@ -365,16 +369,12 @@ Library         Selenium2Library
   \   Run Keyword If  '${status}' == 'PASS'    Exit For Loop
 
 
-Поставити малу ставку в ${last_amount} грн
-  Wait Until Page Contains Element  id=max_bid_amount_price
-  Поставити ставку  ${last_amount}  Ви ввели дуже малу суму
-
-
-Поставити нульову ставку
-  Wait Until Page Contains Element  id=max_bid_amount_price
-  Поставити ставку  0  Bid amount is required
-
-
 Перевірити чи ставка була прийнята
-  ${last_amount}=  convert_amount  ${USERS['${CURRENT_USER}']['last_amount']}
-  Page Should Contain  ${last_amount}
+    [Arguments]    ${locator}
+  Element should contain  ${locator}  ${current_VPN}
+
+
+Перевірити чи ставка була відмінена
+    [Arguments]    ${locator}
+  ${amount}=  Get text  ${round2_bidder2}
+  Element should contain  ${locator}  ${amount}

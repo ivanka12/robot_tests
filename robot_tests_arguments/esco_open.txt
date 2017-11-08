@@ -1,7 +1,7 @@
 -v MODE:esco
 
 -v NUMBER_OF_ITEMS:1
--v NUMBER_OF_LOTS:1
+-v NUMBER_OF_LOTS:3
 
 -v TENDER_MEAT:False
 -v ITEM_MEAT:False
@@ -24,6 +24,8 @@
 -i pre-qualification_approve_second_bid
 -i pre-qualification_approve_qualifications
 -i pre-qualification_view
+
+-i auction_url
 
 -i auction
 
