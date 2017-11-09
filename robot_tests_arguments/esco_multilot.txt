@@ -1,18 +1,17 @@
 -v MODE:esco
 
 -v NUMBER_OF_ITEMS:1
--v NUMBER_OF_LOTS:1
+-v NUMBER_OF_LOTS:3
 
--v TENDER_MEAT:True
--v ITEM_MEAT:True
--v LOT_MEAT:True
+-v TENDER_MEAT:False
+-v ITEM_MEAT:False
+-v LOT_MEAT:False
 
 
 -i create_tender
 -i find_tender
 -i tender_view
--i meat_view
--i lot_view
+
 
 -i extend_tendering_period
 -i add_tender_doc
@@ -22,12 +21,6 @@
   #-i delete_lot
 -i add_item
   -i delete_item
--i add_tender_meat
-  -i delete_tender_meat
--i add_lot_meat
-  -i delete_lot_meat
--i add_item_meat
-  -i delete_item_meat
 
 -i ask_question_to_tender
   -i answer_question_to_tender
@@ -43,10 +36,6 @@
   -i resolve_tender_claim
 -i modify_tender_after_claim
 
--i create_lot_claim
-  -i answer_lot_claim
-  -i resolve_lot_claim
--i modify_lot_after_claim
 
 -i make_bid_without_related_lot
 -i make_bid_without_parameters

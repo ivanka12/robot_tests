@@ -1,11 +1,11 @@
 -v MODE:esco
 
 -v NUMBER_OF_ITEMS:1
--v NUMBER_OF_LOTS:3
+-v NUMBER_OF_LOTS:1
 
--v TENDER_MEAT:True
--v ITEM_MEAT:True
--v LOT_MEAT:True
+-v TENDER_MEAT:False
+-v ITEM_MEAT:False
+-v LOT_MEAT:False
 
 
 -i create_tender
@@ -22,12 +22,6 @@
   #-i delete_lot
 -i add_item
   -i delete_item
--i add_tender_meat
-  -i delete_tender_meat
--i add_lot_meat
-  -i delete_lot_meat
--i add_item_meat
-  -i delete_item_meat
 
 -i ask_question_to_tender
   -i answer_question_to_tender
