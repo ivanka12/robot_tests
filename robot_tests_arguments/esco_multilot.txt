@@ -1,7 +1,7 @@
 -v MODE:esco
 
 -v NUMBER_OF_ITEMS:1
--v NUMBER_OF_LOTS:3
+-v NUMBER_OF_LOTS:2
 
 -v TENDER_MEAT:False
 -v ITEM_MEAT:False
@@ -78,6 +78,10 @@
 -i pre-qualification_reject_second_bid
   -i pre-qualification_cancel_second_bid_qualification
 -i pre-qualification_approve_second_bid
+
+-i pre-qualification_approve_third_bid
+
+-i pre-qualification_approve_fourth_bid
 
 -i pre-qualification_approve_qualifications
 
