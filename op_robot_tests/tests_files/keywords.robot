@@ -278,6 +278,10 @@ Get Broker Property By Username
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${TENDER['TENDER_UAID']}
   Log  ${tender}
   ${bid}=  generate_test_bid_data  ${tender.data}
+  Log  ${bid}
+  Run keyword and ignore error  Log  Вектор економії:${bid['data']['lotValues'][0]['value']['annualCostsReduction']}  WARN
+  Run keyword and ignore error  Log  Вектор економії для другого лоту:${bid['data']['lotValues'][1]['value']['annualCostsReduction']}  WARN
+  Run keyword and ignore error  Log  Вектор економії:${bid['data']['value']['annualCostsReduction']}  WARN
   [Return]  ${bid}
 
 
