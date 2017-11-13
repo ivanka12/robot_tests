@@ -1,8 +1,8 @@
--v MODE:dgfOtherAssets
+-v MODE:dgfInsider
 
 -i create_tender
 -i find_tender
-#-i status_view
+-i status_view
 -i tender_view
 -i make_bid_by_provider
 -i make_bid_by_provider1

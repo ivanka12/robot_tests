@@ -184,6 +184,8 @@ Get Broker Property By Username
       ...          lot_id=${USERS.users['${tender_owner}'].tender_data.data.id}
       ...          tender_owner_access_token=${USERS.users['${tender_owner}'].access_token}
   ...  ELSE  Set To Dictionary  ${artifact}  lot_id=''    assets_id=''
+  Set To Dictionary  ${artifact}
+  ...  tender_id=${USERS.users['${tender_owner}'].tender_data.data.id}
   Log   ${artifact}
   log_object_data  ${artifact}  file_name=artifact  update=${True}  artifact=${True}
 
@@ -823,7 +825,7 @@ Require Failure
   Оновити LAST_MODIFICATION_DATE
   Дочекатись синхронізації з майданчиком  ${username}
   Wait until keyword succeeds
-  ...      12 min 15 sec
+  ...      30 min 15 sec
   ...      15 sec
   ...      Звірити статус тендера
   ...      ${username}

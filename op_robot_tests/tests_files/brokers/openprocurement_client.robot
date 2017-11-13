@@ -186,14 +186,15 @@ Library  openprocurement_client.utils
   [Arguments]  ${username}  ${tender_data}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  create_tender  ${tender_data}
   Log object data  ${tender}  created_tender
-  Set To Dictionary  ${tender.data}  status=active.tendering
+  Run Keyword if  '${MODE}' == 'assets' or '${MODE}' == 'lots'  Set To Dictionary  ${tender.data}  status=pending
+  ...  ELSE  Set To Dictionary  ${tender.data}  status=pending.verification
   Log object data  ${tender}  created_tender
   ${access_token}=  Get Variable Value  ${tender.access.token}
   Set To Dictionary  ${USERS.users['${username}']}   access_token=${access_token}
   Set To Dictionary  ${USERS.users['${username}']}   tender_data=${tender}
   Log   ${USERS.users['${username}'].tender_data}
   Run Keyword if  '${MODE}' == 'assets' or '${MODE}' == 'lots'
-  ...  Log  ${\n}${registry_api_host_url}/api/${registry_api_version}/${resource}/${tender.data.id}${\n}  WARN
+  ...  Log  ${\n}${\n}${registry_api_host_url}/api/${registry_api_version}/${resource}/${tender.data.id}${\n}${\n}  WARN
   ...  ELSE  Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/${resource}/${tender.data.id}${\n}  WARN
   ${ID}=  Run Keyword if  '${MODE}' == 'assets'  Set Variable  ${tender.data.assetID}
   ...  ELSE IF  '${MODE}' == 'lots'  Set Variable  ${tender.data.lotID}
@@ -398,8 +399,7 @@ Library  openprocurement_client.utils
   [Arguments]  ${username}  ${tender_uaid}  ${bid}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  create_bid  ${tender.data.id}  ${bid}
-  Log  ${reply}
-  ${reply_active}=  Call Method  ${USERS.users['${username}'].client}  patch_bid  ${tender.data.id}  ${reply}
+  ${reply_active}=  Call Method  ${USERS.users['${username}'].client}  patch_bid  ${tender.data.id}  ${reply}  ${reply.data.id}
   Set To Dictionary  ${USERS.users['${username}']}  access_token=${reply['access']['token']}
   Set To Dictionary   ${USERS.users['${username}'].bidresponses['bid'].data}  id=${reply['data']['id']}
   Log  ${reply_active}

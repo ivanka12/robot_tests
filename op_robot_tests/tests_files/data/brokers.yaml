@@ -32,7 +32,7 @@ Default:
             # Please remember that openUA and openEU procedures
             # forbid anyone to set or modify enquiryPeriod
             # (it is set automatically)
-        dgfOtherAssets:
+        dgfInsider:
             accelerator: 1440
             auction:  [25, 30]
     # Synchronization delay, in seconds
