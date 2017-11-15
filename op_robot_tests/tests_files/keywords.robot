@@ -726,7 +726,7 @@ Require Failure
   Should Be True  '${url}'
   # Should Match Regexp  ${url}  ^https?:\/\/auction(?:-sandbox)?\.openprocurement\.org\/tenders\/([0-9A-Fa-f]{32})
   Log  URL аукціону для глядача: ${url}
-  Log  ${url}  WARN
+  Log  ${\n}${\n}${url}${\n}${\n}  WARN
 
 
 Можливість отримати посилання на аукціон для учасника ${username}
@@ -742,7 +742,7 @@ Require Failure
   Should Be True  '${url}'
   # Should Match Regexp  ${url}  ^https?:\/\/auction(?:-sandbox)?\.openprocurement\.org\/tenders\/([0-9A-Fa-f]{32})
   Log  URL аукціону для учасника: ${url}
-  Log  ${url}  WARN
+  Log  ${\n}${\n}${url}${\n}${\n}  WARN
 
 
 Дочекатись дати
