@@ -279,9 +279,9 @@ Get Broker Property By Username
   Log  ${tender}
   ${bid}=  generate_test_bid_data  ${tender.data}
   Log  ${bid}
-  Run keyword and ignore error  Log  Вектор економії:${bid['data']['lotValues'][0]['value']['annualCostsReduction']}  WARN
-  Run keyword and ignore error  Log  Вектор економії для другого лоту:${bid['data']['lotValues'][1]['value']['annualCostsReduction']}  WARN
-  Run keyword and ignore error  Log  Вектор економії:${bid['data']['value']['annualCostsReduction']}  WARN
+  Run keyword and ignore error  Log  ${\n}${\n}Вектор економії:${bid['data']['lotValues'][0]['value']['annualCostsReduction']}${\n}${\n}  WARN
+  Run keyword and ignore error  Log  ${\n}${\n}Вектор економії для другого лоту:${bid['data']['lotValues'][1]['value']['annualCostsReduction']}${\n}${\n}  WARN
+  Run keyword and ignore error  Log  ${\n}${\n}Вектор економії:${bid['data']['value']['annualCostsReduction']}${\n}${\n}  WARN
   [Return]  ${bid}
 
 
