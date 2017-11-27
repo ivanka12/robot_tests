@@ -15,7 +15,6 @@ Resource           resource.robot
   ${tender_parameters}=  Create Dictionary
   ...      mode=${MODE}
   ...      api_host_url=${REGISTRY_API_HOST_URL}
-  ...      api_key=${REGISTRY_API_KEY}
   ...      number_of_items=${NUMBER_OF_ITEMS}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}

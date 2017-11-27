@@ -346,7 +346,7 @@ ${NUMBER_OF_ITEMS}   ${3}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      dissolved_lot1
+  ...      dissolved_lot
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити статус  pending.dissolution  ${viewer}  ${TENDER['TENDER_UAID']}
 

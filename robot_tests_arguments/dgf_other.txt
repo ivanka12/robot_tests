@@ -8,3 +8,11 @@
 -i make_bid_by_provider1
 -i auction
 -i auction_url
+-i qualification
+-i qualification_add_doc_to_first_award 
+-i qualification_add_auction_protocol_to_bid
+-i qualification_approve_first_award
+-i contract_sign_upload
+-i contract_sign
+-i contract_sign_view
+-i qualification_approve_doc_to_first_award
