@@ -64,6 +64,14 @@ ${NUMBER_OF_ITEMS}   ${3}
   Можливість додати документацію до тендера
 
 
+Відображення вмісту документації до лоту
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення документації
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      add_doc_content
+  Звірити відображення вмісту документа ${USERS.users['${tender_owner}'].tender_document.doc_id} із ${USERS.users['${tender_owner}'].tender_document.doc_content} для користувача ${viewer}
+
+
 Можливість змінити поле relatedLot актива
   [Tags]   ${USERS.users['${viewer}'].broker}: Пошук активу
   ...      viewer  tender_owner
