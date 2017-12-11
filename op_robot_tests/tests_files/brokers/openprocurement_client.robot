@@ -35,7 +35,8 @@ Library  openprocurement_client.utils
 #  Uncomment this line if there is need to precess files operations without DS.
 # ${ds_api_wraper}=  set variable  ${None}
   # ${ds_api_wraper}=  prepare_ds_api_wrapper  ${registry_ds_host_url}  ${auth_ds}
-  ${ds_config}=  Create Dictionary  host_url=${registry_ds_host_url}  auth_ds=${auth_ds}
+  ${ds}=  Run Keyword IF  '${resource}'=='auction'  Set Variable  ${ds_host_url}  ${registry_ds_host_url}
+  ${ds_config}=  Create Dictionary  host_url=${ds_host_url}  auth_ds=${auth_ds}
   # Log  ${ds_api_wraper}
   ${asset_api_wrapper}=  prepare_asset_api_wrapper  ${USERS.users['${username}'].api_key_registry}  assets  ${registry_api_host_url}  ${registry_api_version}
   ${lot_api_wrapper}=  prepare_lot_api_wrapper  ${USERS.users['${username}'].api_key_registry}  lots  ${registry_api_host_url}  ${registry_api_version}
@@ -95,10 +96,11 @@ Library  openprocurement_client.utils
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${bid_id}=  Get Variable Value  ${tender.data.awards[${award_index}].bid_id}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
-  ${response}=  Call Method  ${USERS.users['${username}'].client}  upload_bid_document  ${filepath}  ${tender}  ${bid_id}  documents
+  ${response}=  Call Method  ${USERS.users['${username}'].client}  upload_bid_document  ${filepath}  ${tender.data.id}  ${bid_id}  documents
   Keep In Dictionary  ${response['data']}  id
   Set To Dictionary  ${response['data']}  documentType=auctionProtocol
-  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_bid_document  ${tender}  ${response}  ${bid_id}  ${response['data'].id}
+  ${token}=  Get Variable Value  ${USERS.users['${username}'].access_token}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_bid_document  ${tender}  ${response}  ${bid_id}  ${response['data'].id}  access_token=${token}
   Log  ${reply}
   [return]  ${reply}
 
@@ -186,14 +188,15 @@ Library  openprocurement_client.utils
   [Arguments]  ${username}  ${tender_data}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  create_tender  ${tender_data}
   Log object data  ${tender}  created_tender
-  Set To Dictionary  ${tender.data}  status=active.tendering
+  Run Keyword if  '${MODE}' == 'assets' or '${MODE}' == 'lots'  Set To Dictionary  ${tender.data}  status=pending
+  ...  ELSE  Set To Dictionary  ${tender.data}  status=pending.verification
   Log object data  ${tender}  created_tender
   ${access_token}=  Get Variable Value  ${tender.access.token}
   Set To Dictionary  ${USERS.users['${username}']}   access_token=${access_token}
   Set To Dictionary  ${USERS.users['${username}']}   tender_data=${tender}
   Log   ${USERS.users['${username}'].tender_data}
   Run Keyword if  '${MODE}' == 'assets' or '${MODE}' == 'lots'
-  ...  Log  ${\n}${registry_api_host_url}/api/${registry_api_version}/${resource}/${tender.data.id}${\n}  WARN
+  ...  Log  ${\n}${\n}${registry_api_host_url}/api/${registry_api_version}/${resource}/${tender.data.id}${\n}${\n}  WARN
   ...  ELSE  Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/${resource}/${tender.data.id}${\n}  WARN
   ${ID}=  Run Keyword if  '${MODE}' == 'assets'  Set Variable  ${tender.data.assetID}
   ...  ELSE IF  '${MODE}' == 'lots'  Set Variable  ${tender.data.lotID}
@@ -398,8 +401,7 @@ Library  openprocurement_client.utils
   [Arguments]  ${username}  ${tender_uaid}  ${bid}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  create_bid  ${tender.data.id}  ${bid}
-  Log  ${reply}
-  ${reply_active}=  Call Method  ${USERS.users['${username}'].client}  patch_bid  ${tender.data.id}  ${reply}
+  ${reply_active}=  Call Method  ${USERS.users['${username}'].client}  patch_bid  ${tender.data.id}  ${reply}  ${reply.data.id}
   Set To Dictionary  ${USERS.users['${username}']}  access_token=${reply['access']['token']}
   Set To Dictionary   ${USERS.users['${username}'].bidresponses['bid'].data}  id=${reply['data']['id']}
   Log  ${reply_active}
@@ -524,7 +526,8 @@ Library  openprocurement_client.utils
   ...      [Return] Reply of API
   [Arguments]  ${username}  ${document}  ${tender_uaid}  ${award_num}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  ${doc}=  Call Method  ${USERS.users['${username}'].client}  upload_award_document  ${document}  ${tender}  ${tender.data.awards[${award_num}].id}
+  ${token}=  Get Variable Value  ${USERS.users['${username}'].access_token}
+  ${doc}=  Call Method  ${USERS.users['${username}'].client}  upload_award_document  ${document}  ${tender.data.id}  ${tender.data.awards[${award_num}].id}  access_token=${token} 
   Log  ${doc}
   [Return]  ${doc}
 
@@ -542,7 +545,10 @@ Library  openprocurement_client.utils
   ...      Set To Dictionary  ${award.data}
   ...      qualified=${True}
   ...      eligible=${True}
-  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award  ${tender}  ${award}
+  ${token}=  Get Variable Value  ${USERS.users['${username}'].access_token}
+  Log  ${award}
+  Log  ${token}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award  ${tender.data.id}  ${award}  ${award.data.id}
   Log  ${reply}
 
 
@@ -560,7 +566,7 @@ Library  openprocurement_client.utils
   Set To Dictionary  ${award.data}  id=${tender.data.awards[${award_num}].id}
   Set To Dictionary  ${award.data}  description=${description}
   Set To Dictionary  ${award.data}  title=${title}
-  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award  ${tender}  ${award}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award  ${tender.data.id}  ${award}  ${award.data.id}
   Log  ${reply}
   [Return]  ${reply}
 
@@ -574,7 +580,7 @@ Library  openprocurement_client.utils
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${award}=  create_data_dict   data.status  cancelled
   Set To Dictionary  ${award.data}  id=${tender.data.awards[${award_num}].id}
-  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award  ${tender}  ${award}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award  ${tender.data.id}  ${award}  ${award.data.id}
   Log  ${reply}
   [Return]  ${reply}
 
@@ -667,7 +673,7 @@ Library  openprocurement_client.utils
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${data}=  test_confirm_data  ${tender['data']['contracts'][${contract_num}]['id']}
   Log  ${data}
-  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract  ${tender}  ${data}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract  ${tender.data.id}  ${data}  ${tender['data']['contracts'][${contract_num}]['id']}
   Log  ${reply}
 
 
@@ -676,9 +682,38 @@ Library  openprocurement_client.utils
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${contract_id}=  Get Variable Value  ${tender['data']['contracts'][${contract_num}]['id']}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
-  ${response}=  Call Method  ${USERS.users['${username}'].client}  upload_contract_document  ${filepath}  ${tender}  ${contract_id}  documents
+  ${response}=  Call Method  ${USERS.users['${username}'].client}  upload_contract_document  ${filepath}  ${tender.data.id}  ${contract_id}  documents
   Keep In Dictionary  ${response['data']}  id
   Set To Dictionary  ${response['data']}  documentType=contractSigned
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract_document  ${tender}  ${response}  ${contract_id}  ${response['data'].id}
+  Log  ${reply}
+  [return]  ${reply}
+
+
+Підтвердити наявність протоколу аукціону
+  [Documentation]
+  ...      [Arguments] Username, tender uaid and number of the award to confirm
+  ...      Find tender using uaid, create dict with confirmation data and call patch_award
+  ...      [Return] Nothing
+  [Arguments]  ${username}  ${tender_uaid}  ${award_index}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${award}=  create_data_dict  data.status  pending.payment
+  Set To Dictionary  ${award.data}  id=${tender.data.awards[${award_index}].id}
+  Log  ${award.data.id}
+  Log  ${award}
+  Log  ${tender}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award  ${tender.data.id}  ${award}  ${award.data.id}
+  Log  ${reply}
+
+
+Завантажити протокол аукціону в авард
+  [Arguments]  ${username}  ${tender_uaid}  ${filepath}  ${award_index}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${award_id}=  Get Variable Value  ${tender.data.awards[${award_index}].id}
+  ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
+  ${response}=  Call Method  ${USERS.users['${username}'].client}  upload_award_document  ${filepath}  ${tender.data.id}  ${award_id}  documents  access_token=${USERS.users['${username}'].access_token}
+  Keep In Dictionary  ${response['data']}  id
+  Set To Dictionary  ${response['data']}  documentType=auctionProtocol
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award_document  ${tender.data.id}  ${response}  ${award_id}  ${response['data'].id}
   Log  ${reply}
   [return]  ${reply}

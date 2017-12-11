@@ -14,14 +14,13 @@ Resource           resource.robot
 Можливість зареєструвати актив
   ${tender_parameters}=  Create Dictionary
   ...      mode=${MODE}
-  ...      api_host_url=${API_HOST_URL}
-  ...      api_key=${API_KEY}
+  ...      api_host_url=${REGISTRY_API_HOST_URL}
   ...      number_of_items=${NUMBER_OF_ITEMS}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
   Run keyword if  '${MODE}' == 'assets'  Set to dictionary  ${tender_parameters}  asset_type=${ASSET_TYPE}
   Run keyword if  '${MODE}' == 'lots'  Set to dictionary  ${tender_parameters}  assets_id=${USERS.users['${tender_owner}'].assets_id}
-  Run keyword if  '${MODE}' == 'dgfOtherAssets'  Set to dictionary  ${tender_parameters}  lot_id=${USERS.users['${tender_owner}'].lot_id}
+  Run keyword if  '${MODE}' == 'dgfInsider'  Set to dictionary  ${tender_parameters}  lot_id=${USERS.users['${tender_owner}'].lot_id}
   ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
   ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data}
@@ -342,3 +341,9 @@ Resource           resource.robot
   ...      ${TENDER['TENDER_UAID']}
   ...      ${0}
   Run Keyword And Ignore Error  Remove From Dictionary  ${USERS.users['${viewer}'].tender_data.contracts[0]}  status
+
+
+Можливість завантажити протокол аукціону в авард ${award_index} користувачем ${username}
+  ${auction_protocol_path}  ${file_title}  ${file_content}=  create_fake_doc
+  Run As  ${username}  Завантажити протокол аукціону в авард  ${TENDER['TENDER_UAID']}  ${auction_protocol_path}  ${award_index}
+  Remove File  ${auction_protocol_path}

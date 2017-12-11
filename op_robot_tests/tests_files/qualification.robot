@@ -28,7 +28,7 @@ ${award_index}      ${0}
   [Tags]   ${USERS.users['${viewer}'].broker}: Процес кваліфікації
   ...      viewer  tender_owner
   ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
-  ...      qualification  level1
+  ...      qualification1111  level1
   Дочекатись дати початку періоду кваліфікації  ${viewer}  ${TENDER['TENDER_UAID']}
 
 ##############################################################################################
@@ -51,7 +51,7 @@ ${award_index}      ${0}
   ...  ${USERS.users['${provider}'].broker}
   ...  qualification_add_auction_protocol_to_bid  level1
   [Teardown]  Оновити LMD і дочекатись синхронізації  ${provider}
-  Можливість завантажити протокол аукціону в пропозицію 0 користувачем ${provider}
+  Можливість завантажити протокол аукціону в пропозицію 0 користувачем ${tender_owner}
 
 
 Можливість перевірити протокол аукціону кандидата

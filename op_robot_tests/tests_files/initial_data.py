@@ -25,7 +25,7 @@ fake_ru.add_provider(CompanyProviderRuRu)
 
 
 def create_fake_sentence():
-    return fake.sentence(nb_words=10, variable_nb_words=True)
+    return u"[ТЕСТУВАННЯ] {}".format(fake.sentence(nb_words=10, variable_nb_words=True))
 
 
 def create_fake_tenderAttempts():
@@ -326,7 +326,7 @@ def test_tender_data_dgf_other(params):
     inc_dt += timedelta(minutes=params['intervals']['auction'][0])
     period_dict["auctionPeriod"]["startDate"] = inc_dt.isoformat()
     data.update(period_dict)
-
+    del data["mode"]
     data['procurementMethodType'] = 'dgfOtherAssets'
     data["procuringEntity"] = fake.procuringEntity_other()
 

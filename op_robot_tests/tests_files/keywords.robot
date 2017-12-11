@@ -162,11 +162,6 @@ Get Broker Property By Username
 
 
 Створити артефакт
-  ${artifact}=  Create Dictionary
-  ...      api_version=${api_version}
-  ...      tender_uaid=${TENDER['TENDER_UAID']}
-  ...      last_modification_date=${TENDER['LAST_MODIFICATION_DATE']}
-  ...      mode=${MODE}
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   ${assets_id}=  Create List
@@ -176,6 +171,10 @@ Get Broker Property By Username
   Run Keyword If  '${MODE}'=='assets'  Append To List  ${assets_id}
   ...          ${USERS.users['${tender_owner}'].tender_data.data.id}
   Log  ${assets_id}
+  ${artifact}=  Create Dictionary
+  ...      api_version=${api_version}
+  ...      tender_uaid=${TENDER['TENDER_UAID']}
+  ...      mode=${MODE}
   Run Keyword If  '${MODE}'=='assets'  Set To Dictionary  ${artifact}
   ...  assets_id=${assets_id}
   ...  asset_access_token=${USERS.users['${tender_owner}'].access_token}
@@ -183,7 +182,16 @@ Get Broker Property By Username
       ...          lot_uaid=${USERS.users['${tender_owner}'].tender_data.data.lotID}
       ...          lot_id=${USERS.users['${tender_owner}'].tender_data.data.id}
       ...          tender_owner_access_token=${USERS.users['${tender_owner}'].access_token}
-  ...  ELSE  Set To Dictionary  ${artifact}  lot_id=''    assets_id=''
+  ...  ELSE  Set To Dictionary  ${artifact}  lot_id=''    assets_id=''    last_modification_date=${TENDER['LAST_MODIFICATION_DATE']}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}
+  ...          tender_owner=${USERS.users['${tender_owner}'].broker}
+  ...          access_token=${USERS.users['${tender_owner}'].access_token}
+  ...          tender_id=${USERS.users['${tender_owner}'].tender_data.data.id}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  tender_owner_access_token=${USERS.users['${tender_owner}'].access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider_access_token=${USERS.users['${provider}'].access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider1_access_token=${USERS.users['${provider1}'].access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider_bid_id=${USERS.users['${provider}'].bid_id}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider1_bid_id=${USERS.users['${provider1}'].bid_id}
   Log   ${artifact}
   log_object_data  ${artifact}  file_name=artifact  update=${True}  artifact=${True}
 
@@ -192,12 +200,18 @@ Get Broker Property By Username
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   ${MODE}=  Get Variable Value  ${MODE}  ${ARTIFACT.mode}
-  ${TENDER}=  Create Dictionary  TENDER_UAID=${ARTIFACT.tender_uaid}  LAST_MODIFICATION_DATE=${ARTIFACT.last_modification_date}  LOT_ID=${Empty}
+  ${TENDER}=  Create Dictionary  TENDER_UAID=${ARTIFACT.tender_uaid}  LOT_ID=${Empty}
+  Run Keyword And Ignore Error  Run Keyword If  '${resource}'=='auctions'  Set To Dictionary  ${TENDER}  LAST_MODIFICATION_DATE=${ARTIFACT.last_modification_date}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${viewer}']}  assets_id=${ARTIFACT.assets_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  assets_id=${ARTIFACT.assets_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  lot_id=${ARTIFACT.lot_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${viewer}']}  lot_id=${ARTIFACT.lot_id}
-  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  asset_access_token=${ARTIFACT.asset_access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  access_token=${ARTIFACT.tender_owner_access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider}']}  access_token=${ARTIFACT.provider_access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider1}']}  access_token=${ARTIFACT.provider1_access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider}']}  bid_id=${ARTIFACT.provider_bid_id}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider1}']}  bid_id=${ARTIFACT.provider1_bid_id}
+  # Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  asset_access_token=${ARTIFACT.asset_access_token}
   Log  ${USERS.users['${viewer}'].assets_id}
   Set Suite Variable  ${MODE}
   Set Suite Variable  ${TENDER}
@@ -593,7 +607,7 @@ Log differences between dicts
   ...      15 s
   ...      Run As  ${viewer}  Отримати посилання на аукціон для глядача  ${TENDER['TENDER_UAID']}
   Should Be True  '${url}'
-  Should Match Regexp  ${url}  ^https?:\/\/sandbox\.ea2\.openprocurement\.auction\/auctions\/([0-9A-Fa-f]{32})
+  Should Match Regexp  ${url}  ^https?:\/\/auction(?:-sandbox)?\.ea\.openprocurement\.org\/auctions\/([0-9A-Fa-f]{32})
   Log  URL аукціону для глядача: ${url}
 
 
@@ -608,7 +622,7 @@ Log differences between dicts
   ...      15 s
   ...      Run As  ${username}  Отримати посилання на аукціон для учасника  ${TENDER['TENDER_UAID']}
   Should Be True  '${url}'
-  Should Match Regexp  ${url}  ^https?:\/\/sandbox\.ea2\.openprocurement\.auction\/auctions\/([0-9A-Fa-f]{32})
+  Should Match Regexp  ${url}  ^https?:\/\/auction(?:-sandbox)?\.ea\.openprocurement\.org\/auctions\/([0-9A-Fa-f]{32})
   Log  URL аукціону для учасника: ${url}
 
 
@@ -823,7 +837,7 @@ Require Failure
   Оновити LAST_MODIFICATION_DATE
   Дочекатись синхронізації з майданчиком  ${username}
   Wait until keyword succeeds
-  ...      12 min 15 sec
+  ...      60 min 15 sec
   ...      15 sec
   ...      Звірити статус тендера
   ...      ${username}
@@ -836,7 +850,7 @@ Require Failure
   Оновити LAST_MODIFICATION_DATE
   Дочекатись синхронізації з майданчиком  ${username}
   Wait until keyword succeeds
-  ...      5 min 15 sec
+  ...      60 min 15 sec
   ...      15 sec
   ...      Звірити статус тендера
   ...      ${username}
@@ -853,3 +867,16 @@ Require Failure
   ${LAST_MODIFICATION_DATE}=  Get Current TZdate
   ${status}=  Get Variable Value  ${TEST_STATUS}  PASS
   Run Keyword If  '${status}' == 'PASS'  Set To Dictionary  ${TENDER}  LAST_MODIFICATION_DATE=${LAST_MODIFICATION_DATE}
+
+
+Звірити cтатус неуспішного тендера
+  [Arguments]  ${username}  ${tender_uaid}
+  Оновити LAST_MODIFICATION_DATE
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      40 min 15 sec
+  ...      15 sec
+  ...      Звірити статус тендера
+  ...      ${username}
+  ...      ${tender_uaid}
+  ...      unsuccessful

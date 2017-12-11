@@ -814,7 +814,7 @@ ${ITEM_MEAT}        ${True}
   [Tags]   ${USERS.users['${provider}'].broker}: Процес аукціону
   ...      provider
   ...      ${USERS.users['${provider}'].broker}
-  ...      auction_url
+  ...      auction_url1
   [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   Можливість вичитати посилання на аукціон для учасника ${provider}
 
@@ -823,6 +823,14 @@ ${ITEM_MEAT}        ${True}
   [Tags]   ${USERS.users['${provider1}'].broker}: Процес аукціону
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
-  ...      auction_url
+  ...      auction_url1
   [Setup]  Дочекатись синхронізації з майданчиком  ${provider1}
   Можливість вичитати посилання на аукціон для учасника ${provider1}
+
+
+Можливість дочекатись дати початку кваліфікації
+  [Tags]   ${USERS.users['${viewer}'].broker}: Процес кваліфікації
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      awarding111
+  Дочекатись дати початку періоду аукціону  ${viewer}  ${TENDER['TENDER_UAID']}
