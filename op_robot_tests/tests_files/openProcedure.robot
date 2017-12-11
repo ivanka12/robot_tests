@@ -6,9 +6,8 @@ Suite Teardown  Test Suite Teardown
 
 *** Variables ***
 
-${MODE}             openeu
+${MODE}             dgfInsider
 @{USED_ROLES}       tender_owner  provider  provider1  provider2  viewer
-
 
 ${TENDER_MEAT}      ${True}
 ${NUMBER_OF_ITEMS}  ${0}

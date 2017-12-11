@@ -1,5 +1,4 @@
--v MODE:dgfInsider
-
+#--------openprocedure------#
 -i create_tender
 -i find_tender
 -i status_view
@@ -10,25 +9,33 @@
 -i auction_url
 
 
--i awarding
+#--------awarding---------#
+#-i award_start_date
 -i first_award_verification_status
--i second_award_waiting_status
--i change_first_award_payment_status
 -i add_protocol_to_first_award
 -i approve_first_award_protocol
 -i first_award_payment_status
 -i confirm_first_award
 -i first_award_active_status
--i disqualified_first_award
--i first_award_status_unsuccessful
--i second_award_verification_status
--i change_second_award_payment_status
--i add_protocol_to_second_award
--i approve_second_award_protocol
--i confirm_second_award
--i second_award_active_status
 
 
+#------contract_signing----#
 -i contract_sign_upload
 -i contract_sign
 -i contract_sign_view
+
+
+#----------asset----------#
+-i create_asset
+-i asset_view
+-i find_asset
+-i modify_asset
+
+
+#-----------lot-----------#
+-i create_lot
+-i find_lot
+-i lot_view 
+-i verification_lot 
+-i salable_lot
+-i modify_lot

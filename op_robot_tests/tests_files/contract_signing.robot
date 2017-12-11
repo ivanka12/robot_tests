@@ -6,6 +6,7 @@ Suite Teardown  Test Suite Teardown
 
 *** Variables ***
 @{USED_ROLES}   tender_owner  viewer
+${MODE}             dgfInsider
 
 
 *** Test Cases ***

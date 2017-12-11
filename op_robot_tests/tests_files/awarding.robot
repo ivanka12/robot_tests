@@ -5,6 +5,7 @@ Suite Teardown  Test Suite Teardown
 
 *** Variables ***
 @{USED_ROLES}   tender_owner  viewer  provider  provider1
+${MODE}             dgfInsider
 
 
 *** Test Cases ***
@@ -26,7 +27,7 @@ Suite Teardown  Test Suite Teardown
   [Tags]   ${USERS.users['${viewer}'].broker}: Процес кваліфікації
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      awarding111
+  ...      award_start_date
   Дочекатись дати початку періоду кваліфікації  ${viewer}  ${TENDER['TENDER_UAID']}
 
 

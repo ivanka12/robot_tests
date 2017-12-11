@@ -548,7 +548,7 @@ Library  openprocurement_client.utils
   ${token}=  Get Variable Value  ${USERS.users['${username}'].access_token}
   Log  ${award}
   Log  ${token}
-  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award  ${tender.data.id}  ${award}  ${award.data.id}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award  ${tender.data.id}  ${award}  ${award.data.id}  access_token=${USERS.users['${username}'].access_token}
   Log  ${reply}
 
 
@@ -566,7 +566,7 @@ Library  openprocurement_client.utils
   Set To Dictionary  ${award.data}  id=${tender.data.awards[${award_num}].id}
   Set To Dictionary  ${award.data}  description=${description}
   Set To Dictionary  ${award.data}  title=${title}
-  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award  ${tender.data.id}  ${award}  ${award.data.id}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award  ${tender.data.id}  ${award}  ${award.data.id}  access_token=${USERS.users['${username}'].access_token}
   Log  ${reply}
   [Return]  ${reply}
 
@@ -580,7 +580,7 @@ Library  openprocurement_client.utils
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${award}=  create_data_dict   data.status  cancelled
   Set To Dictionary  ${award.data}  id=${tender.data.awards[${award_num}].id}
-  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award  ${tender.data.id}  ${award}  ${award.data.id}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award  ${tender.data.id}  ${award}  ${award.data.id}  access_token=${USERS.users['${username}'].access_token}
   Log  ${reply}
   [Return]  ${reply}
 
@@ -673,7 +673,7 @@ Library  openprocurement_client.utils
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${data}=  test_confirm_data  ${tender['data']['contracts'][${contract_num}]['id']}
   Log  ${data}
-  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract  ${tender.data.id}  ${data}  ${tender['data']['contracts'][${contract_num}]['id']}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract  ${tender.data.id}  ${data}  ${tender['data']['contracts'][${contract_num}]['id']}    access_token=${USERS.users['${username}'].access_token}
   Log  ${reply}
 
 
@@ -682,10 +682,10 @@ Library  openprocurement_client.utils
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${contract_id}=  Get Variable Value  ${tender['data']['contracts'][${contract_num}]['id']}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
-  ${response}=  Call Method  ${USERS.users['${username}'].client}  upload_contract_document  ${filepath}  ${tender.data.id}  ${contract_id}  documents
+  ${response}=  Call Method  ${USERS.users['${username}'].client}  upload_contract_document  ${filepath}  ${tender.data.id}  ${contract_id}  documents  access_token=${USERS.users['${username}'].access_token}
   Keep In Dictionary  ${response['data']}  id
   Set To Dictionary  ${response['data']}  documentType=contractSigned
-  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract_document  ${tender}  ${response}  ${contract_id}  ${response['data'].id}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract_document  ${tender.data.id}  ${response}  ${contract_id}  ${response['data'].id}  access_token=${USERS.users['${username}'].access_token}
   Log  ${reply}
   [return]  ${reply}
 
@@ -702,7 +702,7 @@ Library  openprocurement_client.utils
   Log  ${award.data.id}
   Log  ${award}
   Log  ${tender}
-  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award  ${tender.data.id}  ${award}  ${award.data.id}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award  ${tender.data.id}  ${award}  ${award.data.id}  access_token=${USERS.users['${username}'].access_token}
   Log  ${reply}
 
 
@@ -714,6 +714,6 @@ Library  openprocurement_client.utils
   ${response}=  Call Method  ${USERS.users['${username}'].client}  upload_award_document  ${filepath}  ${tender.data.id}  ${award_id}  documents  access_token=${USERS.users['${username}'].access_token}
   Keep In Dictionary  ${response['data']}  id
   Set To Dictionary  ${response['data']}  documentType=auctionProtocol
-  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award_document  ${tender.data.id}  ${response}  ${award_id}  ${response['data'].id}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award_document  ${tender.data.id}  ${response}  ${award_id}  ${response['data'].id}  access_token=${USERS.users['${username}'].access_token}
   Log  ${reply}
   [return]  ${reply}

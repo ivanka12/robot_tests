@@ -76,7 +76,7 @@ ${NUMBER_OF_ITEMS}   ${3}
   [Tags]   ${USERS.users['${viewer}'].broker}: Пошук активу
   ...      viewer  tender_owner
   ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
-  ...      modify_asset
+  ...      modify_relatedLot
   ${asset}=  Run As  ${tender_owner}  Змінити поле relatedLot актива  ${USERS.users['${tender_owner}'].assets_id[0]}  ${USERS.users['${tender_owner}'].tender_data.data.id}
 
 
@@ -103,6 +103,14 @@ ${NUMBER_OF_ITEMS}   ${3}
   ...      ${USERS.users['${viewer}'].broker}
   ...      lot_view
   Звірити відображення поля lotID тендера із ${TENDER['TENDER_UAID']} для користувача ${viewer}
+
+
+Відображення номера лоту
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      lot_view
+  Звірити відображення поля lotIdentifier тендера для користувача ${viewer}
 
 
 Відображення назви організації розпорядника лоту
@@ -346,7 +354,7 @@ ${NUMBER_OF_ITEMS}   ${3}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      dissolved_lot
+  ...      dissolved_lot_pending_dissolution
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити статус  pending.dissolution  ${viewer}  ${TENDER['TENDER_UAID']}
 

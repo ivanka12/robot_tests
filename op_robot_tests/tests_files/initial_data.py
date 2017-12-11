@@ -60,6 +60,10 @@ def field_with_id(prefix, sentence):
     return u"{}-{}: {}".format(prefix, fake.uuid4()[:8], sentence)
 
 
+def create_fake_dgfID():
+    return fake.dgfID()
+
+
 def translate_country_en(country):
     if country == u"Україна":
         return "Ukraine"
@@ -214,6 +218,7 @@ def test_lot_data(assets_id):
         "lotType": "basic",
         "mode": "test"
     }
+    test_lot_data['lotIdentifier']= fake.dgfID()
     test_lot_data['lotCustodian']= classification['assetCustodian']
     test_lot_data['description']= classification['description']
     test_lot_data['assets']= assets_id
