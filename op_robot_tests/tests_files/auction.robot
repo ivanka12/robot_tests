@@ -8,7 +8,7 @@ Suite Teardown  Test Suite Teardown
 
 *** Variables ***
 @{USED_ROLES}   viewer
-
+${MODE}             dgfInsider
 
 *** Test Cases ***
 Можливість знайти лот по ідентифікатору
@@ -69,7 +69,7 @@ Suite Teardown  Test Suite Teardown
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних аукціону
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      auction_end_date
+  ...      auction
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Отримати дані із тендера  ${viewer}  ${TENDER['TENDER_UAID']}  auctionPeriod.endDate  ${TENDER['LOT_ID']}
 
@@ -98,17 +98,8 @@ Suite Teardown  Test Suite Teardown
 
 
 Дочекатись дати закінчення аукціону користувачем ${username}
-  Відкрити сторінку аукціону для ${username}
-  ${status}  ${_}=  Run Keyword And Ignore Error  Wait Until Keyword Succeeds  75 times  30 s  Page should contain  Аукціон завершився
-  Run Keyword If  '${status}' == 'FAIL'
-  ...      Run Keywords
-  ...      Отримати дані із тендера  ${username}  ${TENDER['TENDER_UAID']}  auctionPeriod.startDate  ${TENDER['LOT_ID']}
-  ...      AND
-  ...      Дочекатись дати початку аукціону  ${username}
-  ...      AND
-  ...      Дочекатись дати закінчення аукціону користувачем ${username}
-  ...      ELSE
-  ...      Run Keywords
-  ...      Wait Until Keyword Succeeds  5 times  30 s  Page should not contain  очікуємо розкриття учасників
-  ...      AND
-  ...      Close browser
+  Wait until keyword succeeds
+  ...      40 min 15 sec
+  ...      15 sec
+  ...      Отримати дані із тендера   ${username}  ${TENDER['TENDER_UAID']}   auctionPeriod.endDate  ${TENDER['LOT_ID']}
+
