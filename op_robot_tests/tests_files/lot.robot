@@ -375,3 +375,21 @@ ${NUMBER_OF_ITEMS}   ${3}
   ...      dissolved_lot
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити статус активів  ${viewer}  pending
+
+
+Можливість змінити статус лоту на 'recomposed'
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Можливість редагувати лот
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      recomposed_lot
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість змінити статус активу на recomposed
+
+
+Відображення статусу 'pending' після 'recomposed'
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      recomposed_lot
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Звірити статус  pending  ${viewer}  ${TENDER['TENDER_UAID']}
