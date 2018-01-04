@@ -393,3 +393,12 @@ ${NUMBER_OF_ITEMS}   ${3}
   ...      recomposed_lot
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити статус  pending  ${viewer}  ${TENDER['TENDER_UAID']}
+
+
+Відображення статусу 'pending' активів лоту після 'recomposed'
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення статусів активів
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      lot_view
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Звірити статус активів  ${viewer}  pending
