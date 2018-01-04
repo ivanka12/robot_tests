@@ -207,6 +207,7 @@ def test_asset_data(params):
         test_asset_data["assetType"] = "claimRights"
     else:
         del test_asset_data["items"]
+    test_asset_data["quantity"] = round(random.uniform(1, 10), 3)
     return munchify(test_asset_data)
 
 
