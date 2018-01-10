@@ -2940,57 +2940,15 @@
         {
             "additionalClassifications": [
                 {
-                    "scheme": "CPVS",
-                    "id": "PA01-7",
+                    "scheme": "CAV",
+                    "id": "04000000-8",
                     "description": "Найм"
                 }
             ],
             "classification": {
                 "scheme": "CAV",
-                "id": "30111000-0",
-                "description": "Текстові процесори"
-            }
-        },
-        {
-            "additionalClassifications": [
-                {
-                    "scheme": "CPVS",
-                    "id": "PA01-7",
-                    "description": "Найм"
-                }
-            ],
-            "classification": {
-                "scheme": "CAV",
-                "id": "34110000-1",
-                "description": "Легкові автомобілі"
-            }
-        },
-        {
-            "additionalClassifications": [
-                {
-                    "scheme": "CPVS",
-                    "id": "PA01-7",
-                    "description": "Найм"
-                }
-            ],
-            "classification": {
-                "scheme": "CAV",
-                "id": "39710000-2",
-                "description": "Електричні побутові прилади"
-            }
-        },
-        {
-            "additionalClassifications": [
-                {
-                    "scheme": "CPVS",
-                    "id": "PA01-7",
-                    "description": "Найм"
-                }
-            ],
-            "classification": {
-                "scheme": "CAV",
-                "id": "16720000-8",
-                "description": "Трактори, що були у використанні"
+                "id": "04000000-8",
+                "description": "Нерухоме майно"
             }
         }
     ],
@@ -3077,54 +3035,18 @@
         }
     ],
     "schemes_other": [
-        "30111000-0",
-        "34110000-1",
-        "39710000-2",
-        "16720000-8"
+        "04000000-8"
     ],
     "items_base_data_other": [
         {
-            "scheme_id": "30111000-0",
-            "description": "Текстові процесори",
-            "description_ru": "Текстовые процессоры",
-            "description_en": "Text processors",
+            "scheme_id": "04000000-8",
+            "description": "Нерухоме майно",
+            "description_ru": "Недвижимое имущество",
+            "description_en": "Real Estate",
             "quantity": 15,
             "unit": {
-                "code": "H87",
-                "name": "штуки"
-            }
-        },
-                {
-            "scheme_id": "34110000-1",
-            "description": "Легкові автомобілі",
-            "description_ru": "Легковые автомобили",
-            "description_en": "Cars",
-            "quantity": 2,
-            "unit": {
-                "code": "H87",
-                "name": "штуки"
-            }
-        },
-            {
-            "scheme_id": "39710000-2",
-            "description": "Електричні побутові прилади",
-            "description_ru": "Электрические бытовые приборы",
-            "description_en": "Electric household appliances",
-            "quantity": 22,
-            "unit": {
-                "code": "H87",
-                "name": "штуки"
-            }
-        },
-                   {
-            "scheme_id": "16720000-8",
-            "description": "Трактори, що були у використанні",
-            "description_ru": "Тракторы бывшие в употреблении",
-            "description_en": "Tractors that were in use",
-            "quantity": 22,
-            "unit": {
-                "code": "H87",
-                "name": "штуки"
+                "code": "MTK",
+                "name": "метри квадратні"
             }
         }
     ]

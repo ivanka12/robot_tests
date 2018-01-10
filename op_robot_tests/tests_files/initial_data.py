@@ -305,6 +305,8 @@ def test_item_data(scheme):
     data["description"] = field_with_id("i", data["description"])
     data["description_en"] = field_with_id("i", data["description_en"])
     data["description_ru"] = field_with_id("i", data["description_ru"])
+    schema_properties = fake_schema_properties(scheme)
+    data.update(schema_properties)
     return munchify(data)
 
 
@@ -340,4 +342,23 @@ def test_tender_data_dgf_other(params):
     #     scheme_group_other = fake.scheme_other()[:4]
     #     new_item = test_item_data(scheme_group_other)
     #     data['items'].append(new_item)
+    return data
+
+
+def fake_schema_properties(cav):
+    data = {
+        "schema_properties" : {
+                "code": "04",
+                "version": "001",
+                "properties": {
+                    "year": random.randint(1000, 2016),
+                    "floor": random.randint(0, 10),
+                    "livingSpace": random.randint(70, 100),
+                    "landArea": random.randint(70, 100),
+                    "kitchenArea": random.randint(10, 30),
+                    "totalArea": random.randint(10, 1000),
+                    "constructionTechnology": [random.choice([u"монолітно-каркасний", u"панельний", u"утеплена панель", u"цегляний", u"інше"])]
+                    }
+                }
+            }
     return data
