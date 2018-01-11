@@ -758,7 +758,7 @@ Require Failure
   [Arguments]  ${username}  ${status}
   ${len_of_assets}=  Get Length  ${USERS.users['${username}'].assets_id}
   Log  ${len_of_assets}
-  :FOR  ${index}  IN  ${len_of_assets}
+  :FOR  ${index}  IN RANGE  ${len_of_assets}
   \  Wait until keyword succeeds
   \  ...      5 min 15 sec
   \  ...      15 sec

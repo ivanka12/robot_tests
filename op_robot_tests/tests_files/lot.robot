@@ -399,6 +399,6 @@ ${NUMBER_OF_ITEMS}   ${3}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення статусів активів
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      lot_view
+  ...      recomposed_lot
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити статус активів  ${viewer}  pending
