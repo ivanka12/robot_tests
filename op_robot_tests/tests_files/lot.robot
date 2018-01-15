@@ -318,7 +318,7 @@ ${NUMBER_OF_ITEMS}   ${3}
 #   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення статусів активів
 #   ...      viewer
 #   ...      ${USERS.users['${viewer}'].broker}
-#   ...      verification_lot1
+#   ...      verification_lot
 #   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
 #   Звірити статус активів  ${viewer}  verification
 
@@ -402,3 +402,72 @@ ${NUMBER_OF_ITEMS}   ${3}
   ...      recomposed_lot
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити статус активів  ${viewer}  pending
+
+
+Можливість змінити назву лоту після 'recomposed'
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Можливість редагувати лот
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      recomposed_lot
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  ${new_title}=  create_fake_sentence
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  new_title=${new_title}
+  Можливість змінити поле title тендера на ${new_title}
+
+
+Відображення зміненої назви лоту після 'recomposed'
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      recomposed_lot
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Run Keyword And Ignore Error  Remove From Dictionary  ${USERS.users['${viewer}'].tender_data.data}  title
+  Звірити відображення поля title тендера із ${USERS.users['${tender_owner}'].new_title} для користувача ${viewer}
+
+
+Можливість змінити опис лоту після 'recomposed'
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Можливість редагувати лот
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      recomposed_lot
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  ${new_description}=  create_fake_sentence
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  new_description=${new_description}
+  Можливість змінити поле description тендера на ${new_description}
+
+
+Відображення зміненого опису лоту після 'recomposed'
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      recomposed_lot
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Run Keyword And Ignore Error  Remove From Dictionary  ${USERS.users['${viewer}'].tender_data.data}  description
+  Звірити відображення поля description тендера із ${USERS.users['${tender_owner}'].new_description} для користувача ${viewer}
+
+
+Можливість змінити статус лоту на 'verification' після 'recomposed'
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Можливість редагувати лот
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      recomposed_lot
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість змінити статус активу на verification
+
+
+Відображення статусу 'active.salable' після 'recomposed'
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних лоту
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      recomposed_lot
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Звірити статус  active.salable  ${viewer}  ${TENDER['TENDER_UAID']}
+
+
+Відображення статусу 'active' активів лоту після 'recomposed'
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення статусів активів
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      recomposed_lot
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Звірити статус активів  ${viewer}  active
