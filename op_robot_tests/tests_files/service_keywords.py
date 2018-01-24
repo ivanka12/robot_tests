@@ -42,6 +42,7 @@ from .initial_data import (
     create_fake_tenderAttempts,
     test_asset_data,
     test_lot_data,
+    create_fake_year,
 
 )
 from barbecue import chef

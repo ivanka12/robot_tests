@@ -36,6 +36,10 @@ def create_fake_amount():
     return round(random.randint(3000, 999999999))
 
 
+def create_fake_year():
+    return random.randint(1000, 9999)
+
+
 def create_fake_value(value_amount):
     return round(random.uniform(0.5, 0.999) * value_amount, 2)
 
@@ -351,7 +355,7 @@ def fake_schema_properties(cav):
                 "code": "04",
                 "version": "001",
                 "properties": {
-                    "year": random.randint(1000, 2016),
+                    "year": random.randint(1000, 9999),
                     "floor": random.randint(0, 10),
                     "livingSpace": random.randint(70, 100),
                     "landArea": random.randint(70, 100),
