@@ -275,9 +275,8 @@ Get Broker Property By Username
 
 Підготувати дані для подання пропозиції
   [Arguments]  ${username}
-  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${TENDER['TENDER_UAID']}
-  Log  ${tender}
-  ${bid}=  generate_test_bid_data  ${tender.data}
+  Log  ${USERS.users['${username}'].tender_data}
+  ${bid}=  generate_test_bid_data  ${USERS.users['${username}'].tender_data.data}
   [Return]  ${bid}
 
 
